@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
+import 'package:formvalidation/src/models/despachos_model.dart';
 import 'package:formvalidation/src/models/producto_model.dart';
+import 'package:formvalidation/src/pages/despacho_page.dart';
 import 'dart:developer';
 
 import 'package:formvalidation/src/providers/productos_provider.dart';
@@ -24,11 +26,10 @@ class HomePage extends StatelessWidget {
       future: productosProvider.cargarProductos(),
       builder:
           (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
-        print(snapshot.hasData);
+        // print(snapshot.hasData);
 
         if (snapshot.hasData) {
           final productos = snapshot.data;
-
           return ListView.builder(
             itemCount: productos.length,
             itemBuilder: (context, i) => _crearItem(context, productos[i]),
@@ -41,6 +42,8 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _crearItem(BuildContext context, ProductoModel producto) {
+    final despacho = new DespachoModel();
+    // print(context);
     return Dismissible(
         key: UniqueKey(),
         background: Container(
@@ -64,9 +67,9 @@ class HomePage extends StatelessWidget {
               ListTile(
                 title: Text('${producto.nombre} - ${producto.precio}'),
                 subtitle: Text(producto.key),
-                onTap: () => Navigator.pushNamed(context, 'producto',
+                onTap: () => Navigator.pushNamed(context, 'despacho',
                     arguments: producto),
-              ),
+              )
             ],
           ),
         ));
@@ -76,7 +79,12 @@ class HomePage extends StatelessWidget {
     return FloatingActionButton(
       child: Icon(Icons.add),
       backgroundColor: Colors.deepPurple,
-      onPressed: () => Navigator.pushNamed(context, 'producto'),
+      onPressed: () => Navigator.pushNamed(context, 'despacho'),
+      // onPressed: () => Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => DespachoPage(context),
+      //     ))
     );
   }
 }
