@@ -18,7 +18,7 @@ class ProductosProvider {
 
     final decodedData = json.decode(resp.body);
 
-    print(decodedData);
+    // print(decodedData);
 
     return true;
   }
@@ -38,7 +38,7 @@ class ProductosProvider {
   Future<List<ProductoModel>> cargarProductos() async {
     final url = 'https://hermesbd-8fbb1.firebaseio.com/productoHermes.json';
     final resp = await http.get(url);
-    print(resp);
+    //  print(resp);
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ProductoModel> productos = new List();
 
@@ -47,7 +47,7 @@ class ProductosProvider {
     decodedData.forEach((id, prod) {
       final prodTemp = ProductoModel.fromJson(prod);
       prodTemp.key = id;
-      print(prod);
+      //   print(prod);
       productos.add(prodTemp);
     });
 

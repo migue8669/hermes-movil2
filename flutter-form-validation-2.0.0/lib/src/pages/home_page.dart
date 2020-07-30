@@ -7,7 +7,16 @@ import 'dart:developer';
 
 import 'package:formvalidation/src/providers/productos_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => new _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var isSelected = false;
+  var mycolor = Colors.white;
+  var lista = List();
+
   final productosProvider = new ProductosProvider();
 
   @override
@@ -31,9 +40,49 @@ class HomePage extends StatelessWidget {
         if (snapshot.hasData) {
           final productos = snapshot.data;
           return ListView.builder(
-            itemCount: productos.length,
-            itemBuilder: (context, i) => _crearItem(context, productos[i]),
-          );
+              itemCount: productos.length,
+              itemBuilder: (context, i) {
+                return Dismissible(
+                    key: UniqueKey(),
+                    background: Container(
+                      color: Colors.red,
+                    ),
+                    onDismissed: (direccion) {
+                      productosProvider.borrarProducto(productos[i].key);
+                    },
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          (productos[i].imageUrl == null)
+                              ? Image(image: AssetImage('assets/no-image.png'))
+                              : FadeInImage(
+                                  image: NetworkImage(productos[i].imageUrl),
+                                  placeholder:
+                                      AssetImage('assets/jar-loading.gif'),
+                                  height: 300.0,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                          ListTile(
+                            //   selected: isSelected,
+
+                            title: Text(
+                                '${productos[i].nombre} - ${productos[i].precio}'),
+                            subtitle: Text(productos[i].key),
+                            selected: isSelected,
+
+                            onTap: () => toggleSelection(productos[i].nombre),
+
+                            ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
+
+                            //        arguments: producto),
+                            // onTap: () => Navigator.pushNamed(context, 'despacho',
+                            //        arguments: producto),
+                          ),
+                        ],
+                      ),
+                    ));
+              });
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -41,38 +90,21 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(BuildContext context, ProductoModel producto) {
-    final despacho = new DespachoModel();
-    // print(context);
-    return Dismissible(
-        key: UniqueKey(),
-        background: Container(
-          color: Colors.red,
-        ),
-        onDismissed: (direccion) {
-          productosProvider.borrarProducto(producto.key);
-        },
-        child: Card(
-          child: Column(
-            children: <Widget>[
-              (producto.imageUrl == null)
-                  ? Image(image: AssetImage('assets/no-image.png'))
-                  : FadeInImage(
-                      image: NetworkImage(producto.imageUrl),
-                      placeholder: AssetImage('assets/jar-loading.gif'),
-                      height: 300.0,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-              ListTile(
-                title: Text('${producto.nombre} - ${producto.precio}'),
-                subtitle: Text(producto.key),
-                onTap: () => Navigator.pushNamed(context, 'despacho',
-                    arguments: producto),
-              )
-            ],
-          ),
-        ));
+  void toggleSelection(productos) {
+    setState(() {
+      if (isSelected == false) {
+        print("dentro de isselected");
+        lista.add(productos);
+        print(lista);
+        mycolor = Colors.blue;
+        isSelected = true;
+        //    Navigator.pushNamed(context, 'despacho', arguments: lista);
+        //  return lista;
+      } else {
+        mycolor = Colors.grey[300];
+        isSelected = false;
+      }
+    });
   }
 
   _crearBoton(BuildContext context) {

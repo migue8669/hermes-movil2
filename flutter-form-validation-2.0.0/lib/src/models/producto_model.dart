@@ -20,6 +20,7 @@ class ProductoModel {
   String precio;
   //bool disponible;
   String imageUrl;
+  bool isSelected = false; //the initializtion is mandatory
 
   ProductoModel({
     this.key,
