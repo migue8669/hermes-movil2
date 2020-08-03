@@ -12,7 +12,7 @@ import 'package:formvalidation/src/models/producto_model.dart';
 class DespachoProvider {
   final String _url = 'https://hermesbd-8fbb1.firebaseio.com';
 
-  Future<bool> crearDespacho(DespachoModel despacho) async {
+  Future<bool> crearDespacho(despacho) async {
     final url = '$_url/despachados.json';
 
     final resp = await http.post(url, body: despachoModelToJson(despacho));

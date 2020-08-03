@@ -24,10 +24,31 @@ class _HomePageState extends State<HomePage> {
     final bloc = Provider.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: _crearListado(),
-      floatingActionButton: _crearBoton(context),
-    );
+        appBar: AppBar(title: Text('Home')),
+        body: _crearListado(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _crearBoton(context),
+              _eliminarBoton(context)
+              // FloatingActionButton(
+              //   onPressed: () {},
+              //   child: Icon(Icons.navigate_before),
+              // ),
+              // FloatingActionButton(
+              //   onPressed: () {},
+              //   child: Icon(Icons.navigate_next),
+              // )
+            ],
+          ),
+        )
+        // floatingActionButton: _crearBoton(context),
+        //floatingActionButtonAnimator: _eliminarBoton(context),
+        //      floatingActionButton: _crearBoton(context),
+        );
   }
 
   Widget _crearListado() {
@@ -71,7 +92,8 @@ class _HomePageState extends State<HomePage> {
                             subtitle: Text(productos[i].key),
                             selected: isSelected,
 
-                            onTap: () => toggleSelection(productos[i].nombre),
+                            onLongPress: () =>
+                                toggleSelection(productos[i].nombre),
 
                             ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
 
@@ -90,16 +112,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void toggleSelection(productos) {
+  void toggleSelection(producto) {
     setState(() {
       if (isSelected == false) {
-        print("dentro de isselected");
-        lista.add(productos);
+        lista.add(producto);
         print(lista);
         mycolor = Colors.blue;
         isSelected = true;
-        //    Navigator.pushNamed(context, 'despacho', arguments: lista);
-        //  return lista;
+        return lista;
       } else {
         mycolor = Colors.grey[300];
         isSelected = false;
@@ -109,14 +129,33 @@ class _HomePageState extends State<HomePage> {
 
   _crearBoton(BuildContext context) {
     return FloatingActionButton(
-      child: Icon(Icons.add),
-      backgroundColor: Colors.deepPurple,
-      onPressed: () => Navigator.pushNamed(context, 'despacho'),
-      // onPressed: () => Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => DespachoPage(context),
-      //     ))
-    );
+        heroTag: "btn1",
+        child: Icon(Icons.add),
+        backgroundColor: Colors.deepPurple,
+        onPressed: () => Navigator.pushNamed(context, 'despacho',
+            arguments: lista.toString()));
+  }
+
+  _eliminarBoton(BuildContext context) {
+    return FloatingActionButton(
+        heroTag: "btn2",
+        child: Icon(Icons.add),
+        backgroundColor: Colors.deepPurple,
+        onPressed: () => Navigator.pushNamed(context, 'despacho',
+            arguments: lista.toString()));
   }
 }
+//    Navigator.pushNamed(context, 'despacho', arguments: lista);
+//  return lista;
+
+// Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//         builder: (context) => DespachoPage(despacho: productos)));
+// onPressed: () => Navigator.push(
+//     context, MaterialPageRoute(builder: (context) => DespachoPage(despachoss: lista))
+//Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => DespachoPage(context),
+//     ))

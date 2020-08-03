@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
           'login': (BuildContext context) => LoginPage(),
           'home': (BuildContext context) => HomePage(),
           'producto': (BuildContext context) => ProductoPage(),
-          'despacho': (BuildContext context) => DespachoPage(),
+          'despacho': (BuildContext context) => DespachoPage(
+                despachoss: null,
+              ),
         },
         theme: ThemeData(
           primaryColor: Colors.deepPurple,
