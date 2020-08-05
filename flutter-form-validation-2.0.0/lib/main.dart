@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:formvalidation/src/bloc/provider.dart';
+import 'package:formvalidation/src/pages/borrar_page.dart';
 
 import 'package:formvalidation/src/pages/home_page.dart';
 import 'package:formvalidation/src/pages/login_page.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           'despacho': (BuildContext context) => DespachoPage(
                 despachoss: null,
               ),
+          'borrar': (BuildContext context) => BorrarPage()
         },
         theme: ThemeData(
           primaryColor: Colors.deepPurple,

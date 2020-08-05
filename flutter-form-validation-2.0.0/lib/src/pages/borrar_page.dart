@@ -7,12 +7,12 @@ import 'dart:developer';
 
 import 'package:formvalidation/src/providers/productos_provider.dart';
 
-class HomePage extends StatefulWidget {
+class BorrarPage extends StatefulWidget {
   @override
-  _HomePageState createState() => new _HomePageState();
+  _BorrarPageState createState() => new _BorrarPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BorrarPageState extends State<BorrarPage> {
   var isSelected = false;
   var mycolor = Colors.white;
   var lista = List();
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     final bloc = Provider.of(context);
 
     return Scaffold(
-        appBar: AppBar(title: Text('Home')),
+        appBar: AppBar(title: Text('Borrar')),
         body: _crearListado(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
@@ -52,48 +52,54 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _crearListado() {
-    return FutureBuilder(
-      future: productosProvider.cargarProductos(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
-        // print(snapshot.hasData);
+    final String prodDatas = ModalRoute.of(context).settings.arguments;
+    print(prodDatas.toString());
 
-        if (snapshot.hasData) {
-          final productos = snapshot.data;
+    return FutureBuilder(
+      // future: prodData,
+      // future: productosProvider.cargarProductos(),
+      builder: (BuildContext context, prodData) {
+        // print(snapshot.hasData);
+        final productos = prodDatas.toString();
+        lista.add(productos);
+        if (lista != null) {
+          print(productos);
           return ListView.builder(
-              itemCount: productos.length,
+              itemCount: lista.length,
               itemBuilder: (context, i) {
                 return Dismissible(
-                    key: Key(productos[i].key),
+                    key: Key(productos),
                     background: Container(
                       color: Colors.red,
                     ),
                     onDismissed: (direccion) {
-                      productosProvider.borrarProducto(productos[i].key);
+                      lista.remove(productos);
+
+                      Navigator.pushNamed(context, 'despacho',
+                          arguments: lista.toString());
+                      //  productosProvider.borrarProducto(lista[i]);
                     },
                     child: Card(
                       child: Column(
                         children: <Widget>[
-                          (productos[i].imageUrl == null)
-                              ? Image(image: AssetImage('assets/no-image.png'))
-                              : FadeInImage(
-                                  image: NetworkImage(productos[i].imageUrl),
-                                  placeholder:
-                                      AssetImage('assets/jar-loading.gif'),
-                                  height: 300.0,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                          //    (productos[i].imageUrl == null)
+                          //      ? Image(image: AssetImage('assets/no-image.png'))
+                          // : FadeInImage(
+                          //     image: NetworkImage(productos[i].imageUrl),
+                          //     placeholder:
+                          //         AssetImage('assets/jar-loading.gif'),
+                          //     height: 300.0,
+                          //     width: double.infinity,
+                          //     fit: BoxFit.cover,
+                          //   ),
                           ListTile(
                             //   selected: isSelected,
 
-                            title: Text(
-                                '${productos[i].nombre} - ${productos[i].precio}'),
-                            subtitle: Text(productos[i].key),
+                            title: Text('${lista[i]} '),
+                            // subtitle: Text(productos[i].key),
                             selected: isSelected,
 
-                            onLongPress: () =>
-                                toggleSelection(productos[i].nombre),
+                            onLongPress: () => toggleSelection(productos[i]),
 
                             ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
 
@@ -113,19 +119,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   void toggleSelection(producto) {
-    setState(() {
-      if (isSelected == false) {
-        lista.add(producto);
-        print(lista);
-        mycolor = Colors.blue;
-        isSelected = true;
-        return lista;
-      } else {
-        //  lista.remove(producto);
-        mycolor = Colors.grey[300];
-        isSelected = false;
-      }
-    });
+    // setState(() {
+    //   if (isSelected == false) {
+    //     lista.add(producto);
+    //     print(lista);
+    //     mycolor = Colors.blue;
+    //     isSelected = true;
+    //     return lista;
+    //   } else {
+    //     //  lista.remove(producto);
+    //     mycolor = Colors.grey[300];
+    //     isSelected = false;
+    //   }
+    // });
   }
 
   _crearBoton(BuildContext context) {

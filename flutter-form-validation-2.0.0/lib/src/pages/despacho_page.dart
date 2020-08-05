@@ -136,9 +136,12 @@ class _DespachoPageState extends State<DespachoPage> {
 
   Widget _crearPedido() {
     return ListTile(
-      // title: Text('${widget.despachoss.nombre}'),
-      title: Text('${despachos.pedido}'),
-    );
+        // title: Text('${widget.despachoss.nombre}'),
+        title: Text('${despachos.pedido}'),
+        onTap: () {
+          Navigator.pushNamed(context, 'borrar',
+              arguments: despachos.pedido.toString());
+        });
   }
 
   Widget _crearBoton() {
