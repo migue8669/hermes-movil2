@@ -18,6 +18,7 @@ class ProductoModel {
   String key;
   String nombre;
   String precio;
+  String cantidad;
   //bool disponible;
   String imageUrl;
   bool isSelected = false; //the initializtion is mandatory
@@ -26,6 +27,8 @@ class ProductoModel {
     this.key,
     this.nombre = '',
     this.precio = '',
+    this.cantidad = '',
+
     //this.disponible = true,
     this.imageUrl,
   });
@@ -35,6 +38,7 @@ class ProductoModel {
         key: json["key"],
         nombre: json["nombre"],
         precio: json["precio"],
+        cantidad: json["cantidad"],
         //disponible: json["disponible"],
         imageUrl: json["imageUrl"],
       );
@@ -44,6 +48,7 @@ class ProductoModel {
         "key": key,
         "nombre": nombre,
         "precio": precio,
+        "cantidad": cantidad,
 //      "disponible": disponible,
         "imageUrl": imageUrl,
       };

@@ -15,9 +15,29 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var isSelected = false;
   var mycolor = Colors.white;
-  var lista = List();
-
+  List<Map<String, dynamic>> lista = [];
+  var contadorSuma = 0;
+  var contadorResta = 0;
   final productosProvider = new ProductosProvider();
+  final myController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+
+    myController.addListener(_printLatestValue);
+  }
+
+  @override
+  void dispose() {
+    // Limpia el controlador cuando el widget se elimine del árbol de widgets
+    // Esto también elimina el listener _printLatestValue
+    myController.dispose();
+    super.dispose();
+  }
+
+  _printLatestValue() {
+    print("Second text field: ${myController.text}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +83,17 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
               itemCount: productos.length,
               itemBuilder: (context, i) {
+                Map<String, String> myObject;
+                //     Map<String, String> myObject = {
+                //   productos[i].nombre: productos[contadorSuma].cantidad
+                // };
                 return Dismissible(
                     key: Key(productos[i].key),
                     background: Container(
                       color: Colors.red,
                     ),
                     onDismissed: (direccion) {
-                      productosProvider.borrarProducto(productos[i].key);
+                      // productosProvider.borrarProducto(productos[i].key);
                     },
                     child: Card(
                       child: Column(
@@ -92,8 +116,9 @@ class _HomePageState extends State<HomePage> {
                             subtitle: Text(productos[i].key),
                             selected: isSelected,
 
-                            onLongPress: () =>
-                                toggleSelection(productos[i].nombre),
+                            //onLongPress: () =>
+                            // _anadir(),
+                            //    toggleSelection(productos[i].nombre),
 
                             ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
 
@@ -101,6 +126,48 @@ class _HomePageState extends State<HomePage> {
                             // onTap: () => Navigator.pushNamed(context, 'despacho',
                             //        arguments: producto),
                           ),
+                          ButtonBar(
+                            children: <Widget>[
+                              FlatButton(
+                                child: Icon(Icons.add),
+                                //Text(contadorSuma.toString()),
+                                onPressed: () {
+                                  // contadorSuma = (contadorSuma + 1);
+                                  print(contadorSuma);
+                                  setState(() {
+                                    myObject = {
+                                      productos[i].nombre:
+                                          productos[contadorSuma].cantidad
+                                    };
+                                    //    toggleSelection(productos[i].nombre);
+                                    //  lista.add(productos[i].nombre, contadorSuma);
+                                    contadorSuma++;
+
+                                    lista.add(myObject);
+                                    print(lista);
+                                  });
+                                  /* ... */
+                                },
+                              ),
+                              FlatButton(
+                                child: Icon(Icons.delete),
+                                //Text(contadorResta.toString()),
+                                onPressed: () {
+                                  // contadorSuma = (contadorSuma - 1);
+                                  print(contadorSuma);
+
+                                  setState(() {
+                                    //       toggleSelection(productos[i].nombre);
+                                    lista.remove(myObject);
+                                    contadorSuma--;
+                                    print(lista);
+                                  });
+                                  /* ... */
+                                },
+                              ),
+                              Text(contadorSuma.toString()),
+                            ],
+                          )
                         ],
                       ),
                     ));
@@ -119,6 +186,7 @@ class _HomePageState extends State<HomePage> {
         print(lista);
         mycolor = Colors.blue;
         isSelected = true;
+
         return lista;
       } else {
         //  lista.remove(producto);
