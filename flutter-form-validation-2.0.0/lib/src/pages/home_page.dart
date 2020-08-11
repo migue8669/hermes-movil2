@@ -15,7 +15,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var isSelected = false;
   var mycolor = Colors.white;
-  List<Map<String, dynamic>> lista = [];
+//  List<Map<String, dynamic>> lista = [];
+  var productoL = List();
+  // var cantidadL = List();
+
+  List<Map<List, String>> lista = [];
+
   var contadorSuma = 0;
   var contadorResta = 0;
   final productosProvider = new ProductosProvider();
@@ -81,9 +86,9 @@ class _HomePageState extends State<HomePage> {
         if (snapshot.hasData) {
           final productos = snapshot.data;
           return ListView.builder(
-              itemCount: productos.length,
+              itemCount: productos.length.compareTo(0),
               itemBuilder: (context, i) {
-                Map<String, String> myObject;
+                Map<List, String> myObject;
                 //     Map<String, String> myObject = {
                 //   productos[i].nombre: productos[contadorSuma].cantidad
                 // };
@@ -96,81 +101,126 @@ class _HomePageState extends State<HomePage> {
                       // productosProvider.borrarProducto(productos[i].key);
                     },
                     child: Card(
-                      child: Column(
-                        children: <Widget>[
-                          (productos[i].imageUrl == null)
-                              ? Image(image: AssetImage('assets/no-image.png'))
-                              : FadeInImage(
-                                  image: NetworkImage(productos[i].imageUrl),
-                                  placeholder:
-                                      AssetImage('assets/jar-loading.gif'),
-                                  height: 300.0,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                          ListTile(
+                        child: Column(
+                      children: <Widget>[
+                        (productos[i].imageUrl == null)
+                            ? Image(image: AssetImage('assets/no-image.png'))
+                            : FadeInImage(
+                                image: NetworkImage(productos[i].imageUrl),
+                                placeholder:
+                                    AssetImage('assets/jar-loading.gif'),
+                                height: 300.0,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                        ListTile(
                             //   selected: isSelected,
 
                             title: Text(
                                 '${productos[i].nombre} - ${productos[i].precio}'),
                             subtitle: Text(productos[i].key),
                             selected: isSelected,
+                            // trailing: IconButton(
+                            //     icon: Icon(Icons.alarm),
+                            //     onPressed: () {
+                            //       setState(() {
+                            //         contadorSuma++;
+                            //       });
+                            //       productoL.add(productos[i].nombre);
+                            //       cantidadL.add(contadorSuma);
 
-                            //onLongPress: () =>
-                            // _anadir(),
-                            //    toggleSelection(productos[i].nombre),
+                            //       // print(productos[i].nombre);
+                            //       myObject = {productoL: cantidadL};
+                            //       lista.add(myObject);
+                            //       // lista.add(myObject);
+                            //       print(lista);
+                            //     }
 
-                            ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
+                            onLongPress: () =>
+                                productoL.add(productos[i].nombre),
+                            onTap: () => productoL.remove(productos[i].nombre)
+                            //     // _anadir(),
+                            //     //    toggleSelection(productos[i].nombre),
 
-                            //        arguments: producto),
-                            // onTap: () => Navigator.pushNamed(context, 'despacho',
-                            //        arguments: producto),
-                          ),
-                          ButtonBar(
-                            children: <Widget>[
-                              FlatButton(
-                                child: Icon(Icons.add),
-                                //Text(contadorSuma.toString()),
-                                onPressed: () {
-                                  // contadorSuma = (contadorSuma + 1);
-                                  print(contadorSuma);
-                                  setState(() {
-                                    myObject = {
-                                      productos[i].nombre:
-                                          productos[contadorSuma].cantidad
-                                    };
-                                    //    toggleSelection(productos[i].nombre);
-                                    //  lista.add(productos[i].nombre, contadorSuma);
-                                    contadorSuma++;
+                            //     ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
 
-                                    lista.add(myObject);
-                                    print(lista);
-                                  });
-                                  /* ... */
-                                },
-                              ),
-                              FlatButton(
-                                child: Icon(Icons.delete),
-                                //Text(contadorResta.toString()),
-                                onPressed: () {
-                                  // contadorSuma = (contadorSuma - 1);
-                                  print(contadorSuma);
+                            //     //        arguments: producto),
+                            //     // onTap: () => Navigator.pushNamed(context, 'despacho',
+                            //     //        arguments: producto),
+                            // )
+                            ),
+                        ButtonBar(
+                          children: <Widget>[
+                            FlatButton(
+                              child: Icon(Icons.add),
+                              //Text(contadorSuma.toString()),
+                              onPressed: () {
+                                setState(() {
+                                  contadorSuma++;
+                                  print(lista);
+                                });
+                                // productoL.add(productos[i].nombre);
+                                //cantidadL.remove(contadorSuma);
+                                lista.clear();
 
-                                  setState(() {
-                                    //       toggleSelection(productos[i].nombre);
-                                    lista.remove(myObject);
-                                    contadorSuma--;
-                                    print(lista);
-                                  });
-                                  /* ... */
-                                },
-                              ),
-                              Text(contadorSuma.toString()),
-                            ],
-                          )
-                        ],
-                      ),
-                    ));
+                                // print(productos[i].nombre);
+                                myObject = {productoL: contadorSuma.toString()};
+                                print(myObject);
+                                // if (myObject.containsValue(productoL)) {
+                                //   myObject.remove(productoL);
+                                // }
+                                // if (cantidadL.remove(productos[i].nombre)) {
+                                //   lista.clear();
+                                // } else {
+                                lista.add(myObject);
+                                //   }
+                                // lista.add(myObject);
+                                print(lista);
+                                // contadorSuma = (contadorSuma + 1);
+                                print(contadorSuma);
+                                // setState(() {
+                                //   myObject = {
+                                //     productos[i].nombre:
+                                //         productos[contadorSuma].cantidad
+                                //   };
+                                //   //    toggleSelection(productos[i].nombre);
+                                //   //  lista.add(productos[i].nombre, contadorSuma);
+                                //   contadorSuma++;
+
+                                //   lista.add(myObject);
+                                //   print(lista);
+                                // });
+                                /* ... */
+                              },
+                            ),
+                            FlatButton(
+                              child: Icon(Icons.delete),
+                              //Text(contadorResta.toString()),
+                              onPressed: () {
+                                // contadorSuma = (contadorSuma - 1);
+                                print(contadorSuma);
+                                lista.clear();
+                                setState(() {
+                                  //toggleSelection(productos[i].nombre);
+                                  contadorSuma--;
+                                  print(lista);
+                                });
+                                //    productoL.add(productos[i].nombre);
+                                //    cantidadL.remove(contadorSuma);
+
+                                // print(productos[i].nombre);
+                                myObject = {productoL: contadorSuma.toString()};
+                                print(myObject);
+                                /* ... */
+                                print(lista);
+                                print(contadorSuma);
+                              },
+                            ),
+                            Text(contadorSuma.toString()),
+                          ],
+                        )
+                      ],
+                    )));
               });
         } else {
           return Center(child: CircularProgressIndicator());
