@@ -17,10 +17,10 @@ class _HomePageState extends State<HomePage> {
   var mycolor = Colors.white;
 //  List<Map<String, dynamic>> lista = [];
   var productoL = List();
-  // var cantidadL = List();
+  var cantidadL = List();
 
   List<Map<List, String>> lista = [];
-
+  List<Map<String, int>> productoycantidad = [];
   var contadorSuma = 0;
   var contadorResta = 0;
   final productosProvider = new ProductosProvider();
@@ -86,9 +86,12 @@ class _HomePageState extends State<HomePage> {
         if (snapshot.hasData) {
           final productos = snapshot.data;
           return ListView.builder(
-              itemCount: productos.length.compareTo(0),
+              itemCount: productos.length,
               itemBuilder: (context, i) {
-                Map<List, String> myObject;
+                Map<List, List> myObject;
+                Map<List, int> myObject1;
+                List<Map> tralingObject = [];
+
                 //     Map<String, String> myObject = {
                 //   productos[i].nombre: productos[contadorSuma].cantidad
                 // };
@@ -114,111 +117,213 @@ class _HomePageState extends State<HomePage> {
                                 fit: BoxFit.cover,
                               ),
                         ListTile(
-                            //   selected: isSelected,
+                          //   selected: isSelected,
 
-                            title: Text(
-                                '${productos[i].nombre} - ${productos[i].precio}'),
-                            subtitle: Text(productos[i].key),
-                            selected: isSelected,
-                            // trailing: IconButton(
-                            //     icon: Icon(Icons.alarm),
-                            //     onPressed: () {
-                            //       setState(() {
-                            //         contadorSuma++;
-                            //       });
-                            //       productoL.add(productos[i].nombre);
-                            //       cantidadL.add(contadorSuma);
+                          title: Text(
+                              '${productos[i].nombre} - ${productos[i].precio}'),
+                          subtitle: Text(productos[i].key),
+                          trailing: (productos[i].cantidad == null)
+                              ? IconButton(
+                                  icon: Icon(Icons.add),
+                                  onPressed: () {
+                                    if (productoycantidad
+                                            .where((element) =>
+                                                element.containsKey(
+                                                    productos[i].nombre))
+                                            .length ==
+                                        0) {
+                                      print(productoycantidad
+                                          .where((element) => element
+                                              .containsKey(productos[i].nombre))
+                                          .length);
 
-                            //       // print(productos[i].nombre);
-                            //       myObject = {productoL: cantidadL};
-                            //       lista.add(myObject);
-                            //       // lista.add(myObject);
-                            //       print(lista);
-                            //     }
+                                      print("dentro de if");
 
-                            onLongPress: () =>
-                                productoL.add(productos[i].nombre),
-                            onTap: () => productoL.remove(productos[i].nombre)
-                            //     // _anadir(),
-                            //     //    toggleSelection(productos[i].nombre),
+                                      setState(() {
+                                        contadorSuma = 0;
+                                        contadorSuma++;
+                                        productos[i].cantidad = contadorSuma;
+                                        productoL
+                                            .insert(i, {productos[i].nombre});
+                                        cantidadL
+                                            .insert(i, {productos[i].cantidad});
 
-                            //     ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
+                                        productoycantidad.insert(i, {
+                                          productos[i].nombre:
+                                              productos[i].cantidad
+                                        });
+                                      });
+                                      print(productoycantidad);
+                                      //bloque que se encontraba en setState:
+                                      //
+                                      // if (contadorSuma == 0) {
+                                      //   contadorSuma++;
+                                      //   productos[i].cantidad = contadorSuma;
+                                      // } else {
+                                      //   //    contadorSuma = productos[i].cantidad;
+                                      //   print(contadorSuma);
 
-                            //     //        arguments: producto),
-                            //     // onTap: () => Navigator.pushNamed(context, 'despacho',
-                            //     //        arguments: producto),
-                            // )
-                            ),
-                        ButtonBar(
-                          children: <Widget>[
-                            FlatButton(
-                              child: Icon(Icons.add),
-                              //Text(contadorSuma.toString()),
-                              onPressed: () {
-                                setState(() {
-                                  contadorSuma++;
-                                  print(lista);
-                                });
-                                // productoL.add(productos[i].nombre);
-                                //cantidadL.remove(contadorSuma);
-                                lista.clear();
+                                      //   contadorSuma++;
+                                      //   productos[i].cantidad = contadorSuma;
+                                      // }
 
-                                // print(productos[i].nombre);
-                                myObject = {productoL: contadorSuma.toString()};
-                                print(myObject);
-                                // if (myObject.containsValue(productoL)) {
-                                //   myObject.remove(productoL);
-                                // }
-                                // if (cantidadL.remove(productos[i].nombre)) {
-                                //   lista.clear();
-                                // } else {
-                                lista.add(myObject);
-                                //   }
-                                // lista.add(myObject);
-                                print(lista);
-                                // contadorSuma = (contadorSuma + 1);
-                                print(contadorSuma);
-                                // setState(() {
-                                //   myObject = {
-                                //     productos[i].nombre:
-                                //         productos[contadorSuma].cantidad
-                                //   };
-                                //   //    toggleSelection(productos[i].nombre);
-                                //   //  lista.add(productos[i].nombre, contadorSuma);
-                                //   contadorSuma++;
+                                      // productoL.add(productos[i].nombre);
+                                      // cantidadL.add(productos[i].cantidad);
+                                      // productoycantidad.add({
+                                      //   productos[i].nombre:
+                                      //       productos[i].cantidad
+                                      // });
 
-                                //   lista.add(myObject);
-                                //   print(lista);
-                                // });
-                                /* ... */
-                              },
-                            ),
-                            FlatButton(
-                              child: Icon(Icons.delete),
-                              //Text(contadorResta.toString()),
-                              onPressed: () {
-                                // contadorSuma = (contadorSuma - 1);
-                                print(contadorSuma);
-                                lista.clear();
-                                setState(() {
-                                  //toggleSelection(productos[i].nombre);
-                                  contadorSuma--;
-                                  print(lista);
-                                });
-                                //    productoL.add(productos[i].nombre);
-                                //    cantidadL.remove(contadorSuma);
+                                    } else {
+                                      if (contadorSuma >= 0) {
+                                        print("dentro de if contadorSuma");
+                                        print(cantidadL);
+                                        setState(() {
+                                          print(contadorSuma);
+                                          contadorSuma++;
+                                          productos[i].cantidad = contadorSuma;
 
-                                // print(productos[i].nombre);
-                                myObject = {productoL: contadorSuma.toString()};
-                                print(myObject);
-                                /* ... */
-                                print(lista);
-                                print(contadorSuma);
-                              },
-                            ),
-                            Text(contadorSuma.toString()),
-                          ],
-                        )
+                                          cantidadL.insert(i, {
+                                            // productos[i].nombre:
+                                            productos[i].cantidad
+                                          });
+                                          productoycantidad.removeAt(i);
+                                          productoycantidad.insert(i, {
+                                            productos[i].nombre:
+                                                productos[i].cantidad
+                                          });
+                                        });
+
+                                        // print("cantidad desde lista");
+                                        // print(cantidadL);
+
+                                        // contadorSuma++;
+                                        // productos[i].cantidad = contadorSuma;
+                                        // productoycantidad.insert(i, {
+                                        //   productos[i].nombre:
+                                        //       productos[i].cantidad
+                                        // });
+                                      }
+                                      //  else {
+                                      //   productoL.add(productos[i].nombre);
+                                      //   cantidadL.add(productos[i].cantidad);
+                                      //   productoycantidad.add({
+                                      //     productos[i].nombre:
+                                      //         productos[i].cantidad
+                                      //   });
+                                      // }
+                                      print("productoYcantidad");
+                                      print(productoycantidad);
+                                      // myObject = {productoL: cantidadL};
+                                      // tralingObject.add(myObject);
+                                      // print("trailing");
+                                      // print(tralingObject);
+
+                                    }
+                                  })
+                              : null,
+                        ),
+                        // trailing: IconButton(
+                        //     icon: Icon(Icons.alarm),
+                        //     onPressed: () {
+                        //       setState(() {
+                        //         contadorSuma++;
+                        //       });
+                        //       productoL.add(productos[i].nombre);
+                        //       cantidadL.add(contadorSuma);
+
+                        //       // print(productos[i].nombre);
+                        //       myObject = {productoL: cantidadL};
+                        //       lista.add(myObject);
+                        //       // lista.add(myObject);
+                        //       print(lista);
+                        //     }
+
+                        // onLongPress: () => {
+                        //       productoL.add(productos[i].nombre),
+                        //     },
+                        // onTap: () => productoL.remove(productos[i].nombre)
+
+                        //     //    toggleSelection(productos[i].nombre),
+
+                        //     ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
+
+                        //     //        arguments: producto),
+                        //     // onTap: () => Navigator.pushNamed(context, 'despacho',
+                        //     //        arguments: producto),
+                        // )
+
+                        // ButtonBar(
+                        //   children: <Widget>[
+                        //     FlatButton(
+                        //       child: Icon(Icons.add),
+                        //       //Text(contadorSuma.toString()),
+                        //       onPressed: () {
+                        //         setState(() {
+                        //           contadorSuma++;
+                        //           print(lista);
+                        //         });
+                        //         myObject1 = {productoL: contadorSuma};
+                        //         print(myObject1);
+
+                        //         // productoL.add(productos[i].nombre);
+                        //         //cantidadL.remove(contadorSuma);
+                        //         lista.clear();
+
+                        //         // print(productos[i].nombre);
+                        //         //       myObject = {productoL: contadorSuma.toString()};
+                        //         print(myObject);
+                        //         // if (myObject.containsValue(productoL)) {
+                        //         //   myObject.remove(productoL);
+                        //         // }
+                        //         // if (cantidadL.remove(productos[i].nombre)) {
+                        //         //   lista.clear();
+                        //         // } else {
+                        //         //        lista.add(myObject);
+                        //         //   }
+                        //         // lista.add(myObject);
+                        //         print(lista);
+                        //         // contadorSuma = (contadorSuma + 1);
+                        //         print(contadorSuma);
+                        //         // setState(() {
+                        //         //   myObject = {
+                        //         //     productos[i].nombre:
+                        //         //         productos[contadorSuma].cantidad
+                        //         //   };
+                        //         //   //    toggleSelection(productos[i].nombre);
+                        //         //   //  lista.add(productos[i].nombre, contadorSuma);
+                        //         //   contadorSuma++;
+
+                        //         //   lista.add(myObject);
+                        //         //   print(lista);
+                        //         // });
+                        //         /* ... */
+                        //       },
+                        //     ),
+                        //     FlatButton(
+                        //       child: Icon(Icons.delete),
+                        //       //Text(contadorResta.toString()),
+                        //       onPressed: () {
+                        //         // contadorSuma = (contadorSuma - 1);
+                        //         print(contadorSuma);
+                        //         lista.clear();
+                        //         setState(() {
+                        //           //toggleSelection(productos[i].nombre);
+                        //           contadorSuma--;
+                        //           print(lista);
+                        //         });
+                        //         //    productoL.add(productos[i].nombre);
+                        //         //    cantidadL.remove(contadorSuma);
+
+                        //         // print(productos[i].nombre);
+                        //         //        myObject = {productoL: contadorSuma.toString()};
+                        //         print(myObject);
+                        //         /* ... */
+                        //         print(lista);
+                        //         print(contadorSuma);
+                        //       },
+                        //     ),
+                        Text(contadorSuma.toString()),
                       ],
                     )));
               });

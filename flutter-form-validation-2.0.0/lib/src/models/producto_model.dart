@@ -18,7 +18,7 @@ class ProductoModel {
   String key;
   String nombre;
   String precio;
-  String cantidad;
+  int cantidad;
   //bool disponible;
   String imageUrl;
   bool isSelected = false; //the initializtion is mandatory
@@ -27,7 +27,7 @@ class ProductoModel {
     this.key,
     this.nombre = '',
     this.precio = '',
-    this.cantidad = '',
+    this.cantidad = 0,
 
     //this.disponible = true,
     this.imageUrl,
