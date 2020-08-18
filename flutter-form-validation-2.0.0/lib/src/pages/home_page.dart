@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/models/despachos_model.dart';
@@ -154,39 +156,37 @@ class _HomePageState extends State<HomePage> {
                                         });
                                       });
                                       print(productoycantidad);
-                                      //bloque que se encontraba en setState:
-                                      //
-                                      // if (contadorSuma == 0) {
-                                      //   contadorSuma++;
-                                      //   productos[i].cantidad = contadorSuma;
-                                      // } else {
-                                      //   //    contadorSuma = productos[i].cantidad;
-                                      //   print(contadorSuma);
-
-                                      //   contadorSuma++;
-                                      //   productos[i].cantidad = contadorSuma;
-                                      // }
-
-                                      // productoL.add(productos[i].nombre);
-                                      // cantidadL.add(productos[i].cantidad);
-                                      // productoycantidad.add({
-                                      //   productos[i].nombre:
-                                      //       productos[i].cantidad
-                                      // });
-
                                     } else {
                                       if (contadorSuma >= 0) {
                                         print("dentro de if contadorSuma");
-                                        print(cantidadL);
+                                        print(productoycantidad
+                                            .where((element) =>
+                                                element.containsKey(
+                                                    productos[i].nombre))
+                                            // print(productoycantidad
+                                            //     .where((element) =>
+                                            //         element.containsKey(
+                                            //             productos[i].nombre))
+                                            .map((e) => e.forEach((key, value) {
+                                                  print("coronamos");
+                                                  print(value);
+                                                  contadorSuma = 0;
+                                                  productos[i].cantidad = value;
+                                                })));
                                         setState(() {
                                           print(contadorSuma);
                                           contadorSuma++;
-                                          productos[i].cantidad = contadorSuma;
+                                          productos[i].cantidad =
+                                              productos[i].cantidad +
+                                                  contadorSuma;
 
                                           cantidadL.insert(i, {
                                             // productos[i].nombre:
                                             productos[i].cantidad
                                           });
+                                          print("cantidadL");
+                                          print(cantidadL);
+
                                           productoycantidad.removeAt(i);
                                           productoycantidad.insert(i, {
                                             productos[i].nombre:
@@ -204,14 +204,7 @@ class _HomePageState extends State<HomePage> {
                                         //       productos[i].cantidad
                                         // });
                                       }
-                                      //  else {
-                                      //   productoL.add(productos[i].nombre);
-                                      //   cantidadL.add(productos[i].cantidad);
-                                      //   productoycantidad.add({
-                                      //     productos[i].nombre:
-                                      //         productos[i].cantidad
-                                      //   });
-                                      // }
+
                                       print("productoYcantidad");
                                       print(productoycantidad);
                                       // myObject = {productoL: cantidadL};
@@ -223,107 +216,9 @@ class _HomePageState extends State<HomePage> {
                                   })
                               : null,
                         ),
-                        // trailing: IconButton(
-                        //     icon: Icon(Icons.alarm),
-                        //     onPressed: () {
-                        //       setState(() {
-                        //         contadorSuma++;
-                        //       });
-                        //       productoL.add(productos[i].nombre);
-                        //       cantidadL.add(contadorSuma);
-
-                        //       // print(productos[i].nombre);
-                        //       myObject = {productoL: cantidadL};
-                        //       lista.add(myObject);
-                        //       // lista.add(myObject);
-                        //       print(lista);
-                        //     }
-
-                        // onLongPress: () => {
-                        //       productoL.add(productos[i].nombre),
-                        //     },
-                        // onTap: () => productoL.remove(productos[i].nombre)
-
-                        //     //    toggleSelection(productos[i].nombre),
-
-                        //     ////     Navigator.pushNamed(context, 'despacho',  arguments: lista),
-
-                        //     //        arguments: producto),
-                        //     // onTap: () => Navigator.pushNamed(context, 'despacho',
-                        //     //        arguments: producto),
-                        // )
-
-                        // ButtonBar(
-                        //   children: <Widget>[
-                        //     FlatButton(
-                        //       child: Icon(Icons.add),
-                        //       //Text(contadorSuma.toString()),
-                        //       onPressed: () {
-                        //         setState(() {
-                        //           contadorSuma++;
-                        //           print(lista);
-                        //         });
-                        //         myObject1 = {productoL: contadorSuma};
-                        //         print(myObject1);
-
-                        //         // productoL.add(productos[i].nombre);
-                        //         //cantidadL.remove(contadorSuma);
-                        //         lista.clear();
-
-                        //         // print(productos[i].nombre);
-                        //         //       myObject = {productoL: contadorSuma.toString()};
-                        //         print(myObject);
-                        //         // if (myObject.containsValue(productoL)) {
-                        //         //   myObject.remove(productoL);
-                        //         // }
-                        //         // if (cantidadL.remove(productos[i].nombre)) {
-                        //         //   lista.clear();
-                        //         // } else {
-                        //         //        lista.add(myObject);
-                        //         //   }
-                        //         // lista.add(myObject);
-                        //         print(lista);
-                        //         // contadorSuma = (contadorSuma + 1);
-                        //         print(contadorSuma);
-                        //         // setState(() {
-                        //         //   myObject = {
-                        //         //     productos[i].nombre:
-                        //         //         productos[contadorSuma].cantidad
-                        //         //   };
-                        //         //   //    toggleSelection(productos[i].nombre);
-                        //         //   //  lista.add(productos[i].nombre, contadorSuma);
-                        //         //   contadorSuma++;
-
-                        //         //   lista.add(myObject);
-                        //         //   print(lista);
-                        //         // });
-                        //         /* ... */
-                        //       },
-                        //     ),
-                        //     FlatButton(
-                        //       child: Icon(Icons.delete),
-                        //       //Text(contadorResta.toString()),
-                        //       onPressed: () {
-                        //         // contadorSuma = (contadorSuma - 1);
-                        //         print(contadorSuma);
-                        //         lista.clear();
-                        //         setState(() {
-                        //           //toggleSelection(productos[i].nombre);
-                        //           contadorSuma--;
-                        //           print(lista);
-                        //         });
-                        //         //    productoL.add(productos[i].nombre);
-                        //         //    cantidadL.remove(contadorSuma);
-
-                        //         // print(productos[i].nombre);
-                        //         //        myObject = {productoL: contadorSuma.toString()};
-                        //         print(myObject);
-                        //         /* ... */
-                        //         print(lista);
-                        //         print(contadorSuma);
-                        //       },
-                        //     ),
-                        Text(contadorSuma.toString()),
+                        Text(productos[i].cantidad.toString()
+                            //contadorSuma.toString()
+                            ),
                       ],
                     )));
               });
