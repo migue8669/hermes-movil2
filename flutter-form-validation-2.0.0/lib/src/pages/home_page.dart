@@ -23,6 +23,8 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<List, String>> lista = [];
   List<Map<String, int>> productoycantidad = [];
+  List<String> tralingObject = [];
+
   var contadorSuma = 0;
   var contadorResta = 0;
   final productosProvider = new ProductosProvider();
@@ -49,7 +51,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of(context);
-
     return Scaffold(
         appBar: AppBar(title: Text('Home')),
         body: _crearListado(),
@@ -92,7 +93,6 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, i) {
                 Map<List, List> myObject;
                 Map<List, int> myObject1;
-                List<Map> tralingObject = [];
 
                 //     Map<String, String> myObject = {
                 //   productos[i].nombre: productos[contadorSuma].cantidad
@@ -172,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                                                   print(value);
                                                   contadorSuma = 0;
                                                   productos[i].cantidad = value;
+                                                  //   contadorResta = value;
                                                 })));
                                         setState(() {
                                           print(contadorSuma);
@@ -207,6 +208,20 @@ class _HomePageState extends State<HomePage> {
 
                                       print("productoYcantidad");
                                       print(productoycantidad);
+                                      productoycantidad
+                                          .where((element) => element
+                                              .containsKey(productos[i].nombre))
+                                          // print(productoycantidad
+                                          //     .where((element) =>
+                                          //         element.containsKey(
+                                          //             productos[i].nombre))
+                                          .map((e) => e.forEach((key, value) {
+                                                print("coronamos");
+                                                print(value);
+                                                contadorSuma = 0;
+                                                //    productos[i].cantidad = value;
+                                                contadorResta = value;
+                                              }));
                                       // myObject = {productoL: cantidadL};
                                       // tralingObject.add(myObject);
                                       // print("trailing");
@@ -216,7 +231,15 @@ class _HomePageState extends State<HomePage> {
                                   })
                               : null,
                         ),
-                        Text(productos[i].cantidad.toString()
+                        Text(productoycantidad[i].values.toString()
+                            //      productoycantidad.map((e) => e.values)
+                            // .map((e) => e.forEach((key, value) {
+                            //       print("sss");
+                            //       print(value);
+                            //       return value;
+                            //     }))
+
+                            //   productos[i].cantidad.toString()
                             //contadorSuma.toString()
                             ),
                       ],
