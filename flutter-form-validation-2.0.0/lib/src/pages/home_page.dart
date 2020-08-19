@@ -22,7 +22,9 @@ class _HomePageState extends State<HomePage> {
   var cantidadL = List();
 
   List<Map<List, String>> lista = [];
-  List<Map<String, int>> productoycantidad = [];
+  List<Map<String, int>> productoycantidad = [
+    {"": 0}
+  ];
   List<String> tralingObject = [];
 
   var contadorSuma = 0;
@@ -61,22 +63,9 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               _crearBoton(context),
-              //          _eliminarBoton(context)
-              // FloatingActionButton(
-              //   onPressed: () {},
-              //   child: Icon(Icons.navigate_before),
-              // ),
-              // FloatingActionButton(
-              //   onPressed: () {},
-              //   child: Icon(Icons.navigate_next),
-              // )
             ],
           ),
-        )
-        // floatingActionButton: _crearBoton(context),
-        //floatingActionButtonAnimator: _eliminarBoton(context),
-        //      floatingActionButton: _crearBoton(context),
-        );
+        ));
   }
 
   Widget _crearListado() {
@@ -91,14 +80,9 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
               itemCount: productos.length,
               itemBuilder: (context, i) {
-                Map<List, List> myObject;
-                Map<List, int> myObject1;
-
-                //     Map<String, String> myObject = {
-                //   productos[i].nombre: productos[contadorSuma].cantidad
-                // };
                 return Dismissible(
-                    key: Key(productos[i].key),
+                    key: UniqueKey(),
+                    // Key(productos[i].key),
                     background: Container(
                       color: Colors.red,
                     ),
@@ -163,10 +147,6 @@ class _HomePageState extends State<HomePage> {
                                             .where((element) =>
                                                 element.containsKey(
                                                     productos[i].nombre))
-                                            // print(productoycantidad
-                                            //     .where((element) =>
-                                            //         element.containsKey(
-                                            //             productos[i].nombre))
                                             .map((e) => e.forEach((key, value) {
                                                   print("coronamos");
                                                   print(value);
@@ -194,16 +174,6 @@ class _HomePageState extends State<HomePage> {
                                                 productos[i].cantidad
                                           });
                                         });
-
-                                        // print("cantidad desde lista");
-                                        // print(cantidadL);
-
-                                        // contadorSuma++;
-                                        // productos[i].cantidad = contadorSuma;
-                                        // productoycantidad.insert(i, {
-                                        //   productos[i].nombre:
-                                        //       productos[i].cantidad
-                                        // });
                                       }
 
                                       print("productoYcantidad");
@@ -211,10 +181,6 @@ class _HomePageState extends State<HomePage> {
                                       productoycantidad
                                           .where((element) => element
                                               .containsKey(productos[i].nombre))
-                                          // print(productoycantidad
-                                          //     .where((element) =>
-                                          //         element.containsKey(
-                                          //             productos[i].nombre))
                                           .map((e) => e.forEach((key, value) {
                                                 print("coronamos");
                                                 print(value);
@@ -222,26 +188,14 @@ class _HomePageState extends State<HomePage> {
                                                 //    productos[i].cantidad = value;
                                                 contadorResta = value;
                                               }));
-                                      // myObject = {productoL: cantidadL};
-                                      // tralingObject.add(myObject);
-                                      // print("trailing");
-                                      // print(tralingObject);
-
                                     }
                                   })
                               : null,
                         ),
-                        Text(productoycantidad[i].values.toString()
-                            //      productoycantidad.map((e) => e.values)
-                            // .map((e) => e.forEach((key, value) {
-                            //       print("sss");
-                            //       print(value);
-                            //       return value;
-                            //     }))
-
-                            //   productos[i].cantidad.toString()
-                            //contadorSuma.toString()
-                            ),
+                        Text(
+                            (productos[i].cantidad == null && contadorSuma == 0)
+                                ? ""
+                                : productoycantidad[i].values.toString()),
                       ],
                     )));
               });
@@ -270,34 +224,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   _crearBoton(BuildContext context) {
+    // productoycantidad.removeLast();
     return FloatingActionButton(
         heroTag: "btn1",
         child: Icon(Icons.add),
         backgroundColor: Colors.deepPurple,
-        onPressed: () => Navigator.pushNamed(context, 'despacho',
-            arguments: lista.toString()));
+        onPressed: () {
+          productoycantidad.removeLast();
+          Navigator.pushNamed(context, 'despacho',
+              arguments: productoycantidad.toString());
+        });
   }
-
-  // _eliminarBoton(BuildContext context) {
-  //   return FloatingActionButton(
-  //       heroTag: "btn2",
-  //       child: Icon(Icons.add),
-  //       backgroundColor: Colors.deepPurple,
-  //       onPressed: () => Navigator.pushNamed(context, 'despacho',
-  //           arguments: lista.toString()));
-  // }
 }
-//    Navigator.pushNamed(context, 'despacho', arguments: lista);
-//  return lista;
-
-// Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//         builder: (context) => DespachoPage(despacho: productos)));
-// onPressed: () => Navigator.push(
-//     context, MaterialPageRoute(builder: (context) => DespachoPage(despachoss: lista))
-//Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//       builder: (context) => DespachoPage(context),
-//     ))
