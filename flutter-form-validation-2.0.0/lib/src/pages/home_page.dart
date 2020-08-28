@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 //  List<Map<String, dynamic>> lista = [];
   var productoL = List();
   var cantidadL = List();
-
+  var z = 0;
   List<Map<List, String>> lista = [];
   List<Map<String, int>> productoycantidad = [
     {"": 0}
@@ -117,13 +117,15 @@ class _HomePageState extends State<HomePage> {
                                                 .where((element) =>
                                                     element.containsKey(
                                                         productos[i].nombre))
-                                                .length ==
-                                            0) {
-                                          print(productoycantidad
-                                              .where((element) =>
-                                                  element.containsKey(
-                                                      productos[i].nombre))
-                                              .length);
+                                                .length !=
+                                            null) {
+                                          // print(productoycantidad
+                                          //     .where((element) =>
+                                          //         element.containsKey(
+                                          //             productos[i].nombre))
+                                          //     .length);
+
+                                          print(i);
 
                                           print("dentro de if");
 
@@ -133,9 +135,9 @@ class _HomePageState extends State<HomePage> {
                                             productos[i].cantidad =
                                                 contadorSuma;
                                             productoL.insert(
-                                                i, {productos[i].nombre});
+                                                z, {productos[i].nombre});
                                             cantidadL.insert(
-                                                i, {productos[i].cantidad});
+                                                z, {productos[i].cantidad});
 
                                             productoycantidad.insert(i, {
                                               productos[i].nombre:
@@ -207,7 +209,10 @@ class _HomePageState extends State<HomePage> {
                                                 .length ==
                                             0) {
                                         } else {
-                                          if (contadorSuma >= 0) {
+                                          print(
+                                              "dentro de else para validar resta");
+                                          print(contadorSuma);
+                                          if (contadorSuma != 0) {
                                             print(
                                                 "dentro de if contadorSuma--");
                                             print(productoycantidad
