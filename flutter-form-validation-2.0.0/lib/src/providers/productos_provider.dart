@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:formvalidation/src/models/despachos_model.dart';
+import 'package:formvalidation/src/models/pedido.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
@@ -10,6 +12,8 @@ import 'package:formvalidation/src/models/producto_model.dart';
 
 class ProductosProvider {
   final String _url = 'https://hermesbd-8fbb1.firebaseio.com';
+
+  String prodTemps;
 
   Future<bool> crearProducto(ProductoModel producto) async {
     final url = '$_url/productos.json';
@@ -47,6 +51,7 @@ class ProductosProvider {
     decodedData.forEach((id, prod) {
       final prodTemp = ProductoModel.fromJson(prod);
       prodTemp.key = id;
+
       //   print(prod);
       productos.add(prodTemp);
     });
@@ -91,5 +96,71 @@ class ProductosProvider {
     print(respData);
 
     return respData['secure_url'];
+  }
+
+  Future<bool> guardarProducto(producto) async {
+    final url = '$_url/seleccionados.json';
+    final resp = await http.post(url, body: productoModelToJson(producto));
+
+    print(resp.body);
+
+    return true;
+  }
+
+  Future<List<PedidoModel>> cargarPedido() async {
+    final url = 'https://hermesbd-8fbb1.firebaseio.com/seleccionados.json';
+    final resp = await http.get(url);
+    //  print(resp);
+    final Map<String, dynamic> decodedData = json.decode(resp.body);
+    final List<PedidoModel> pedido = new List();
+
+    if (decodedData == null) return [];
+
+    decodedData.forEach((id, prod) {
+      final prodTemp = PedidoModel.fromJson(prod);
+      prodTemp.key = id;
+      //   print(prod);
+      pedido.add(prodTemp);
+    });
+
+    // print( productos[0].id );
+
+    return pedido;
+  }
+
+  Future<bool> actualizarProducto(ProductoModel producto) async {
+    final url1 = 'https://hermesbd-8fbb1.firebaseio.com/seleccionados.json';
+    final resp1 = await http.get(url1);
+    //  print(resp);
+    final Map<String, dynamic> decodedData = json.decode(resp1.body);
+    final List<PedidoModel> pedido = new List();
+
+    decodedData.forEach((id, prod) {
+      final prodTemp = PedidoModel.fromJson(prod);
+      prodTemp.key = id;
+      //   print(prod);
+      this.prodTemps = prodTemp.key;
+      pedido.add(prodTemp);
+    });
+
+    final url = '$_url/seleccionados/${this.prodTemps}.json';
+    final resp = await http.put(url, body: productoModelToJson(producto));
+    final decodedData1 = json.decode(resp.body);
+
+    print(decodedData1);
+
+    return true;
+  }
+
+  Future<bool> crearDespacho(despacho) async {
+    final url = '$_url/despachados.json';
+
+    final resp = await http.post(url, body: despachoModelToJson(despacho));
+
+    final decodedData = json.decode(resp.body);
+
+    print(decodedData);
+
+    return true;
   }
 }

@@ -4,27 +4,30 @@
 
 import 'dart:convert';
 
+import 'package:formvalidation/src/models/producto_model.dart';
+
 PedidoModel productoModelFromJson(String str) =>
     PedidoModel.fromJson(json.decode(str));
 
-String productoModelToJson(PedidoModel data) => json.encode(data.toJson());
+String pedidoModelToJson(PedidoModel data) => json.encode(data.toJson());
 
 class PedidoModel {
-  List pedido;
-  // String key;
+  List<ProductoModel> pedido;
+  String key;
   // String nombre;
   // String precio;
   // //bool disponible;
   // String imageUrl;
   // bool isSelected = false; //the initializtion is mandatory
 
-  PedidoModel({this.pedido
-      // this.key,
-      // this.nombre = '',
-      // this.precio = '',
-      // //this.disponible = true,
-      // this.imageUrl,
-      });
+  PedidoModel({
+    this.pedido,
+    this.key,
+    // this.nombre = '',
+    // this.precio = '',
+    // //this.disponible = true,
+    // this.imageUrl,
+  });
 
   factory PedidoModel.fromJson(Map<String, dynamic> json) => new PedidoModel(
         pedido: json["pedido"],
@@ -35,7 +38,7 @@ class PedidoModel {
       );
 
   Map<String, dynamic> toJson() => {
-        // "id"         : id,
+        "id": key,
         "pedido": pedido,
 //         "nombre": nombre,
 //         "precio": precio,
