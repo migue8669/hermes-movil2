@@ -152,6 +152,15 @@ class ProductosProvider {
     return true;
   }
 
+  Future<int> borrarPedido(String id) async {
+    final url = '$_url/seleccionados/${this.prodTemps}.json';
+    final resp = await http.delete(url);
+
+    print(resp.body);
+
+    return 1;
+  }
+
   Future<bool> crearDespacho(despacho) async {
     final url = '$_url/despachados.json';
 

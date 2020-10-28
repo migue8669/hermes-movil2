@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/models/despachos_model.dart';
+import 'package:formvalidation/src/models/pedido.model.dart';
 import 'package:formvalidation/src/models/producto_model.dart';
 import 'package:formvalidation/src/pages/despacho_page.dart';
 import 'dart:developer';
@@ -25,11 +26,13 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, int>> productoycantidad = [
     {"": 0}
   ];
-  List<String> tralingObject = [];
+  List<int> tralingObject = [];
 
   var contadorSuma = 0;
   var contadorResta = 0;
   final productosProvider = new ProductosProvider();
+  final pedido = new PedidoModel();
+
   final myController = TextEditingController();
   @override
   void initState() {
@@ -40,8 +43,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    // Limpia el controlador cuando el widget se elimine del árbol de widgets
-    // Esto también elimina el listener _printLatestValue
     myController.dispose();
     super.dispose();
   }
@@ -77,6 +78,7 @@ class _HomePageState extends State<HomePage> {
 
         if (snapshot.hasData) {
           final productos = snapshot.data;
+
           return ListView.builder(
               itemCount: productos.length,
               itemBuilder: (context, i) {
@@ -107,189 +109,64 @@ class _HomePageState extends State<HomePage> {
 
                           title: Text(
                               '${productos[i].nombre} - ${productos[i].precio}'),
-                          subtitle: Text(productos[i].cantidad.toString()),
+
+                          // subtitle: Text(contadorSuma.toString()),
                           trailing: (productos[i].cantidad == null)
                               ? Wrap(children: <Widget>[
                                   IconButton(
                                       icon: Icon(Icons.add),
                                       onPressed: () {
                                         if (productos[i].cantidad != null) {
+                                          contadorSuma = productos[i].cantidad;
                                           contadorSuma++;
                                           productos[i].cantidad = contadorSuma;
-                                          print(productos);
+                                          tralingObject.add(contadorSuma);
+                                          print("contadorSuma ");
+                                          print(tralingObject);
                                           productosProvider
                                               .actualizarProducto(productos[i]);
                                           print(
                                               "if cantidad diferente de null");
                                         } else {
+                                          if (contadorSuma == null) {
+                                            print("if contadorSuma null");
+
+                                            contadorSuma = 0;
+                                          }
                                           contadorSuma++;
                                           productos[i].cantidad = contadorSuma;
+                                          tralingObject.add(contadorSuma);
+                                          print("contadorSuma ");
+                                          print(tralingObject);
                                           print(productos);
                                           productosProvider
                                               .guardarProducto(productos[i]);
-                                          print(
-                                              "else de cantidad diferente de null");
+                                          print("else de cantidad = null");
                                         }
-                                        // if (productoycantidad
-                                        //         .where((element) =>
-                                        //             element.containsKey(
-                                        //                 productos[i].nombre))
-                                        //         .length !=
-                                        //     null) {
-                                        //   // print(productoycantidad
-                                        //   //     .where((element) =>
-                                        //   //         element.containsKey(
-                                        //   //             productos[i].nombre))
-                                        //   //     .length);
-
-                                        //   print(i);
-
-                                        //   print("dentro de if");
-
-                                        //   setState(() {
-                                        //     contadorSuma = 0;
-                                        //     contadorSuma++;
-                                        //     productos[i].cantidad =
-                                        //         contadorSuma;
-                                        //     productoL.insert(
-                                        //         z, {productos[i].nombre});
-                                        //     cantidadL.insert(
-                                        //         z, {productos[i].cantidad});
-
-                                        //     productoycantidad.insert(i, {
-                                        //       productos[i].nombre:
-                                        //           productos[i].cantidad
-                                        //     });
-                                        //   });
-                                        //   print(productoycantidad);
-                                        // } else {
-                                        //   if (contadorSuma >= 0) {
-                                        //     print("dentro de if contadorSuma");
-                                        //     print(productoycantidad
-                                        //         .where((element) =>
-                                        //             element.containsKey(
-                                        //                 productos[i].nombre))
-                                        //         .map((e) =>
-                                        //             e.forEach((key, value) {
-                                        //               print("coronamos");
-                                        //               print(value);
-                                        //               contadorSuma = 0;
-                                        //               productos[i].cantidad =
-                                        //                   value;
-                                        //               //   contadorResta = value;
-                                        //             })));
-                                        //     setState(() {
-                                        //       print(contadorSuma);
-                                        //       contadorSuma++;
-                                        //       productos[i].cantidad =
-                                        //           productos[i].cantidad +
-                                        //               contadorSuma;
-
-                                        //       cantidadL.insert(i, {
-                                        //         // productos[i].nombre:
-                                        //         productos[i].cantidad
-                                        //       });
-                                        //       print("cantidadL");
-                                        //       print(cantidadL);
-
-                                        //       productoycantidad.removeAt(i);
-                                        //       productoycantidad.insert(i, {
-                                        //         productos[i].nombre:
-                                        //             productos[i].cantidad
-                                        //       });
-                                        //     });
-                                        //   }
-
-                                        //   print("productoYcantidad");
-                                        //   print(productoycantidad);
-                                        //   productoycantidad
-                                        //       .where((element) =>
-                                        //           element.containsKey(
-                                        //               productos[i].nombre))
-                                        //       .map((e) =>
-                                        //           e.forEach((key, value) {
-                                        //             print("coronamos");
-                                        //             print(value);
-                                        //             contadorSuma = 0;
-                                        //             //    productos[i].cantidad = value;
-                                        //             contadorResta = value;
-                                        //           }));
-                                        // }
                                       }),
                                   IconButton(
                                       icon: Icon(Icons.remove),
                                       onPressed: () {
-                                        // if (productoycantidad
-                                        //         .where((element) =>
-                                        //             element.containsKey(
-                                        //                 productos[i].nombre))
-                                        //         .length ==
-                                        //     0) {
-                                        // } else {
-                                        //   print(
-                                        //       "dentro de else para validar resta");
-                                        //   print(contadorSuma);
-                                        //   if (contadorSuma != 0) {
-                                        //     print(
-                                        //         "dentro de if contadorSuma--");
-                                        //     print(productoycantidad
-                                        //         .where((element) =>
-                                        //             element.containsKey(
-                                        //                 productos[i].nombre))
-                                        //         .map((e) =>
-                                        //             e.forEach((key, value) {
-                                        //               print("coronamos--");
-                                        //               print(value);
-                                        //               contadorSuma = 0;
-                                        //               productos[i].cantidad =
-                                        //                   value;
-                                        //               //   contadorResta = value;
-                                        //             })));
-                                        //     setState(() {
-                                        //       print(contadorSuma);
-                                        //       contadorSuma--;
-                                        //       productos[i].cantidad =
-                                        //           productos[i].cantidad +
-                                        //               contadorSuma;
-
-                                        //       cantidadL.insert(i, {
-                                        //         // productos[i].nombre:
-                                        //         productos[i].cantidad
-                                        //       });
-                                        //       print("cantidadL--");
-                                        //       print(cantidadL);
-
-                                        //       productoycantidad.removeAt(i);
-                                        //       productoycantidad.insert(i, {
-                                        //         productos[i].nombre:
-                                        //             productos[i].cantidad
-                                        //       });
-                                        //     });
-                                        //   }
-
-                                        //   print("productoYcantidad--");
-                                        //   print(productoycantidad);
-                                        //   productoycantidad
-                                        //       .where((element) =>
-                                        //           element.containsKey(
-                                        //               productos[i].nombre))
-                                        //       .map((e) =>
-                                        //           e.forEach((key, value) {
-                                        //             print("coronamos--");
-                                        //             print(value);
-                                        //             contadorSuma = 0;
-                                        //             //    productos[i].cantidad = value;
-                                        //             contadorResta = value;
-                                        //           }));
-                                        // }
+                                        // tralingObject.clear();
+                                        if (contadorSuma == null) {
+                                          contadorSuma = 0;
+                                        }
+                                        contadorSuma = productos[i].cantidad;
+                                        print(contadorSuma);
+                                        contadorSuma--;
+                                        tralingObject.add(contadorSuma);
+                                        print("contadorSuma ");
+                                        print(tralingObject);
+                                        productos[i].cantidad = contadorSuma;
+                                        productosProvider
+                                            .actualizarProducto(productos[i]);
                                       })
                                 ])
                               : null,
                         ),
-                        Text(
-                            (productos[i].cantidad == null && contadorSuma == 0)
-                                ? ""
-                                : productoycantidad[i].values.toString()),
+                        Text((tralingObject.length == null)
+                            ? ""
+                            : tralingObject.last.toString())
                       ],
                     )));
               });
@@ -301,6 +178,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void toggleSelection(producto) {
+    // ignore: missing_return
     setState(() {
       if (isSelected == false) {
         lista.add(producto);
