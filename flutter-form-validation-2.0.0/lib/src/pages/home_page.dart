@@ -5,6 +5,7 @@ import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/models/despachos_model.dart';
 import 'package:formvalidation/src/models/pedido.model.dart';
 import 'package:formvalidation/src/models/producto_model.dart';
+import 'package:formvalidation/src/models/seleccionado.model.dart';
 import 'package:formvalidation/src/pages/despacho_page.dart';
 import 'dart:developer';
 
@@ -19,10 +20,10 @@ class _HomePageState extends State<HomePage> {
   var isSelected = false;
   var mycolor = Colors.white;
 //  List<Map<String, dynamic>> lista = [];
-  var productoL = List();
-  var cantidadL = List();
+  List<SeleccionadoModel> productoIndex = List<SeleccionadoModel>();
+  List<SeleccionadoModel> cantidadPedido = List<SeleccionadoModel>();
   var z = 0;
-  List<Map<List, String>> lista = [];
+  List<int> lista = [];
   List<Map<String, int>> productoycantidad = [
     {"": 0}
   ];
@@ -120,9 +121,31 @@ class _HomePageState extends State<HomePage> {
                                           contadorSuma = productos[i].cantidad;
                                           contadorSuma++;
                                           productos[i].cantidad = contadorSuma;
-                                          tralingObject.add(contadorSuma);
-                                          print("contadorSuma ");
+                                          tralingObject.insert(i, contadorSuma);
+                                          print("tralingObject");
                                           print(tralingObject);
+                                          // List.generate(i, (index) {
+                                          //   productoIndex.add(SeleccionadoModel(
+                                          //       i, contadorSuma));
+                                          // });
+                                          // List.generate(productos.length,
+                                          //     (index) {
+                                          //   cantidadPedido.clear();
+
+                                          // cantidadPedido.add(SeleccionadoModel(
+                                          //     i, contadorSuma)); // });
+                                          // print("cantidadPedido-list");
+                                          // for (var i = 0;
+                                          //     i < cantidadPedido.length;
+                                          //     i++) {
+                                          //   print(
+                                          //       'index=$i, value=${cantidadPedido[i].cantidad}');
+                                          // }
+                                          // cantidadPedido
+                                          //     .asMap()
+                                          //     .forEach((i, value) {
+                                          //   print('index=$i, value=$value');
+                                          // });
                                           productosProvider
                                               .actualizarProducto(productos[i]);
                                           print(
@@ -135,14 +158,39 @@ class _HomePageState extends State<HomePage> {
                                           }
                                           contadorSuma++;
                                           productos[i].cantidad = contadorSuma;
-                                          tralingObject.add(contadorSuma);
-                                          print("contadorSuma ");
+                                          tralingObject.insert(i, contadorSuma);
+                                          print("tralingObject");
                                           print(tralingObject);
-                                          print(productos);
+
                                           productosProvider
                                               .guardarProducto(productos[i]);
                                           print("else de cantidad = null");
+                                          print("i");
+                                          print(i);
+                                          print("contadorSuma");
+                                          print(contadorSuma);
+
+                                          // List.generate(productos.length,
+                                          //     (index) {
+                                          //        cantidadPedido.clear();
+                                          // cantidadPedido.add(SeleccionadoModel(
+                                          //     i, contadorSuma));
+                                          // // });
+                                          // print("cantidadPedido-list");
+                                          // for (var i = 0;
+                                          //     i < cantidadPedido.length;
+                                          //     i++) {
+                                          //   print(
+                                          //       'index=$i, value=${cantidadPedido[i].cantidad},value=${cantidadPedido[i].key}');
+                                          // }
+                                          // cantidadPedido
+                                          //     .asMap()
+                                          //     .forEach((i, value) {
+                                          //   print('index=$i, value=$value');
+                                          // });
                                         }
+                                        contadorSuma = 0;
+                                        // tralingObject.clear();
                                       }),
                                   IconButton(
                                       icon: Icon(Icons.remove),
@@ -164,9 +212,9 @@ class _HomePageState extends State<HomePage> {
                                 ])
                               : null,
                         ),
-                        Text((tralingObject.length == null)
+                        Text((tralingObject.isEmpty
                             ? ""
-                            : tralingObject.last.toString())
+                            : tralingObject[i].toString()))
                       ],
                     )));
               });
