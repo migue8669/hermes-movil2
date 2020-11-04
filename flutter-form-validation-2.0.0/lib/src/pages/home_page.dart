@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
     myController.addListener(_printLatestValue);
   }
 
@@ -83,6 +82,9 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
               itemCount: productos.length,
               itemBuilder: (context, i) {
+                if (tralingObject.isEmpty) {
+                  tralingObject.insert(i, 0);
+                }
                 return Dismissible(
                     key: UniqueKey(),
                     // Key(productos[i].key),
@@ -117,13 +119,24 @@ class _HomePageState extends State<HomePage> {
                                   IconButton(
                                       icon: Icon(Icons.add),
                                       onPressed: () {
-                                        if (productos[i].cantidad != null) {
-                                          contadorSuma = productos[i].cantidad;
+                                        if (tralingObject[i] != null ||
+                                            tralingObject[i] != 0) {
+                                          contadorSuma = tralingObject[i];
                                           contadorSuma++;
-                                          productos[i].cantidad = contadorSuma;
-                                          tralingObject.insert(i, contadorSuma);
-                                          print("tralingObject");
-                                          print(tralingObject);
+//productos[i].cantidad = contadorSuma;tra
+                                          if (tralingObject.length <= 1) {
+                                            tralingObject.insert(
+                                                i, contadorSuma);
+                                            print("tralingObject");
+                                            print(tralingObject);
+                                          } else {
+                                            tralingObject.removeAt(i);
+                                            tralingObject.insert(
+                                                i, contadorSuma);
+                                            print("tralingObject2");
+                                            print(tralingObject);
+                                          }
+                                          isSelected = false;
                                           // List.generate(i, (index) {
                                           //   productoIndex.add(SeleccionadoModel(
                                           //       i, contadorSuma));
@@ -151,6 +164,7 @@ class _HomePageState extends State<HomePage> {
                                           print(
                                               "if cantidad diferente de null");
                                         } else {
+                                          tralingObject.insert(i, 0);
                                           if (contadorSuma == null) {
                                             print("if contadorSuma null");
 
@@ -169,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                                           print(i);
                                           print("contadorSuma");
                                           print(contadorSuma);
+                                          isSelected = false;
 
                                           // List.generate(productos.length,
                                           //     (index) {
@@ -189,7 +204,23 @@ class _HomePageState extends State<HomePage> {
                                           //   print('index=$i, value=$value');
                                           // });
                                         }
-                                        contadorSuma = 0;
+
+                                        //contadorSuma = 0;
+                                        setState(() {
+                                          if (isSelected == false) {
+                                            contadorResta = tralingObject[i];
+                                            // lista.add(producto);
+                                            // print(lista);
+                                            // mycolor = Colors.blue;
+                                            isSelected = true;
+
+                                            // return lista;
+                                          } else {
+                                            //  lista.remove(producto);
+                                            mycolor = Colors.grey[300];
+                                            isSelected = false;
+                                          }
+                                        });
                                         // tralingObject.clear();
                                       }),
                                   IconButton(
@@ -212,9 +243,9 @@ class _HomePageState extends State<HomePage> {
                                 ])
                               : null,
                         ),
-                        Text((tralingObject.isEmpty
+                        Text((contadorResta == null
                             ? ""
-                            : tralingObject[i].toString()))
+                            : contadorResta.toString()))
                       ],
                     )));
               });
@@ -225,23 +256,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void toggleSelection(producto) {
-    // ignore: missing_return
-    setState(() {
-      if (isSelected == false) {
-        lista.add(producto);
-        print(lista);
-        mycolor = Colors.blue;
-        isSelected = true;
+  // void toggleSelection(producto) {
+  //   // ignore: missing_return
+  //   setState(() {
+  //     if (isSelected == false) {
+  //       contadorResta = tralingObject[i];
+  //       // lista.add(producto);
+  //       // print(lista);
+  //       // mycolor = Colors.blue;
+  //       // isSelected = true;
 
-        return lista;
-      } else {
-        //  lista.remove(producto);
-        mycolor = Colors.grey[300];
-        isSelected = false;
-      }
-    });
-  }
+  //       // return lista;
+  //     } else {
+  //       //  lista.remove(producto);
+  //       mycolor = Colors.grey[300];
+  //       isSelected = false;
+  //     }
+  //   });
+  // }
 
   _crearBoton(BuildContext context) {
     // productoycantidad.removeLast();
