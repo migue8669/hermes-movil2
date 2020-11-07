@@ -45,8 +45,9 @@ class _DespachoPageState extends State<DespachoPage> {
       despachos.direccion = "";
       despachos.telefono = "";
       despachos.pedido = prodData;
+      print("prodData");
 
-      print(despacho);
+      print(prodData);
       //  print(despachos);
     }
 

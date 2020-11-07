@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   List<SeleccionadoModel> productoIndex = List<SeleccionadoModel>();
   List<SeleccionadoModel> cantidadPedido = List<SeleccionadoModel>();
   var z = 0;
-  List<int> lista = [];
+  List<String> lista = [];
   List<Map<String, int>> productoycantidad = [
     {"": 0}
   ];
@@ -85,6 +85,12 @@ class _HomePageState extends State<HomePage> {
                 if (tralingObject.isEmpty) {
                   tralingObject.insert(i, 0);
                 }
+                if (lista.isEmpty) {
+                  lista.insert(i, "");
+                }
+                if (productoycantidad.isEmpty) {
+                  productoycantidad.insert(i, {"": 0});
+                }
                 return Dismissible(
                     key: UniqueKey(),
                     // Key(productos[i].key),
@@ -127,42 +133,57 @@ class _HomePageState extends State<HomePage> {
                                           if (tralingObject.length <= 1) {
                                             tralingObject.insert(
                                                 i, contadorSuma);
-                                            print("tralingObject");
+                                            print("tralingObject11");
                                             print(tralingObject);
+                                            lista.insert(
+                                                i, productos[i].nombre);
+                                            print("lista");
+                                            print(lista);
                                           } else {
-                                            tralingObject.removeAt(i);
-                                            tralingObject.insert(
-                                                i, contadorSuma);
-                                            print("tralingObject2");
-                                            print(tralingObject);
-                                          }
-                                          isSelected = false;
-                                          // List.generate(i, (index) {
-                                          //   productoIndex.add(SeleccionadoModel(
-                                          //       i, contadorSuma));
-                                          // });
-                                          // List.generate(productos.length,
-                                          //     (index) {
-                                          //   cantidadPedido.clear();
+                                            if (productoycantidad.length >= 1) {
+                                              productoycantidad.removeAt(i);
 
-                                          // cantidadPedido.add(SeleccionadoModel(
-                                          //     i, contadorSuma)); // });
-                                          // print("cantidadPedido-list");
-                                          // for (var i = 0;
-                                          //     i < cantidadPedido.length;
-                                          //     i++) {
-                                          //   print(
-                                          //       'index=$i, value=${cantidadPedido[i].cantidad}');
-                                          // }
-                                          // cantidadPedido
-                                          //     .asMap()
-                                          //     .forEach((i, value) {
-                                          //   print('index=$i, value=$value');
-                                          // });
-                                          productosProvider
-                                              .actualizarProducto(productos[i]);
-                                          print(
-                                              "if cantidad diferente de null");
+                                              tralingObject.removeAt(i);
+                                              lista.removeAt(i);
+                                              lista.insert(
+                                                  i, productos[i].nombre);
+                                              print("lista");
+                                              print(lista);
+
+                                              tralingObject.insert(
+                                                  i, contadorSuma);
+                                              print("tralingObject22");
+                                              print(tralingObject);
+                                            }
+                                            isSelected = false;
+                                            // List.generate(i, (index) {
+                                            //   productoIndex.add(SeleccionadoModel(
+                                            //       i, contadorSuma));
+                                            // });
+                                            // List.generate(productos.length,
+                                            //     (index) {
+                                            //   cantidadPedido.clear();
+
+                                            // cantidadPedido.add(SeleccionadoModel(
+                                            //     i, contadorSuma)); // });
+                                            // print("cantidadPedido-list");
+                                            // for (var i = 0;
+                                            //     i < cantidadPedido.length;
+                                            //     i++) {
+                                            //   print(
+                                            //       'index=$i, value=${cantidadPedido[i].cantidad}');
+                                            // }
+                                            // cantidadPedido
+                                            //     .asMap()
+                                            //     .forEach((i, value) {
+                                            //   print('index=$i, value=$value');
+                                            // });
+                                            productosProvider
+                                                .actualizarProducto(
+                                                    productos[i]);
+                                            print(
+                                                "if cantidad diferente de null");
+                                          }
                                         } else {
                                           tralingObject.insert(i, 0);
                                           if (contadorSuma == null) {
@@ -175,7 +196,9 @@ class _HomePageState extends State<HomePage> {
                                           tralingObject.insert(i, contadorSuma);
                                           print("tralingObject");
                                           print(tralingObject);
-
+                                          lista.insert(i, productos[i].nombre);
+                                          print("lista");
+                                          print(lista);
                                           productosProvider
                                               .guardarProducto(productos[i]);
                                           print("else de cantidad = null");
@@ -203,14 +226,20 @@ class _HomePageState extends State<HomePage> {
                                           //     .forEach((i, value) {
                                           //   print('index=$i, value=$value');
                                           // });
+
                                         }
 
                                         //contadorSuma = 0;
                                         setState(() {
                                           if (isSelected == false) {
                                             contadorResta = tralingObject[i];
+                                            print(productoycantidad);
+                                            productoycantidad.insert(i,
+                                                {lista[i]: tralingObject[i]});
                                             // lista.add(producto);
-                                            // print(lista);
+                                            print("productoycantidadSS");
+
+                                            print(productoycantidad);
                                             // mycolor = Colors.blue;
                                             isSelected = true;
 
@@ -226,16 +255,27 @@ class _HomePageState extends State<HomePage> {
                                   IconButton(
                                       icon: Icon(Icons.remove),
                                       onPressed: () {
+                                        isSelected = false;
+
                                         // tralingObject.clear();
-                                        if (contadorSuma == null) {
-                                          contadorSuma = 0;
+                                        if (tralingObject[i] == null) {
+                                          tralingObject[i] = 0;
                                         }
-                                        contadorSuma = productos[i].cantidad;
+                                        contadorSuma = tralingObject[i];
                                         print(contadorSuma);
                                         contadorSuma--;
-                                        tralingObject.add(contadorSuma);
-                                        print("contadorSuma ");
+                                        productoycantidad.removeAt(i);
+                                        tralingObject.removeAt(i);
+                                        lista.removeAt(i);
+                                        lista.insert(i, productos[i].nombre);
+                                        tralingObject.insert(i, contadorSuma);
+                                        contadorResta = tralingObject[i];
+                                        //.removeAt(i);
+                                        print("productoycantidad114");
+                                        print(lista);
                                         print(tralingObject);
+                                        print(productoycantidad);
+
                                         productos[i].cantidad = contadorSuma;
                                         productosProvider
                                             .actualizarProducto(productos[i]);
@@ -282,7 +322,9 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
         backgroundColor: Colors.deepPurple,
         onPressed: () {
-          productoycantidad.removeLast();
+          print(productoycantidad);
+          print("a otra pantalla");
+          //productoycantidad.removeLast();
           Navigator.pushNamed(context, 'despacho',
               arguments: productoycantidad.toString());
         });
