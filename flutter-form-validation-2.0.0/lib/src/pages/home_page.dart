@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     {"": 0}
   ];
   List<int> tralingObject = [];
-
+  var inicial = 0;
   var contadorSuma = 0;
   var contadorResta = 0;
   final productosProvider = new ProductosProvider();
@@ -125,6 +125,20 @@ class _HomePageState extends State<HomePage> {
                                   IconButton(
                                       icon: Icon(Icons.add),
                                       onPressed: () {
+                                        print("traling");
+                                        print(tralingObject);
+                                        print("i");
+                                        print(i);
+                                        inicial++;
+                                        if (i > 0 && inicial == 1) {
+                                          tralingObject.insert(0, 0);
+                                          tralingObject.forEach((element) {
+                                            print("for");
+                                            print(i);
+                                          });
+                                          print("object1");
+                                          print(tralingObject);
+                                        }
                                         if (tralingObject[i] != null ||
                                             tralingObject[i] != 0) {
                                           contadorSuma = tralingObject[i];
@@ -141,10 +155,10 @@ class _HomePageState extends State<HomePage> {
                                             print(lista);
                                           } else {
                                             if (productoycantidad.length >= 1) {
-                                              productoycantidad.removeAt(i);
+                                              //     productoycantidad.removeAt(i);
 
                                               tralingObject.removeAt(i);
-                                              lista.removeAt(i);
+                                              //         lista.removeAt(i);
                                               lista.insert(
                                                   i, productos[i].nombre);
                                               print("lista");
@@ -185,6 +199,9 @@ class _HomePageState extends State<HomePage> {
                                                 "if cantidad diferente de null");
                                           }
                                         } else {
+                                          // tralingObject.forEach((i) {
+                                          //   print(i);
+                                          // });
                                           tralingObject.insert(i, 0);
                                           if (contadorSuma == null) {
                                             print("if contadorSuma null");
