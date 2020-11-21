@@ -20,14 +20,14 @@ class _HomePageState extends State<HomePage> {
   var isSelected = false;
   var mycolor = Colors.white;
 //  List<Map<String, dynamic>> lista = [];
-  List<SeleccionadoModel> productoIndex = List<SeleccionadoModel>();
-  List<SeleccionadoModel> cantidadPedido = List<SeleccionadoModel>();
+  List listaP = [];
+  List<SeleccionadoModel> listaPedido = List<SeleccionadoModel>();
   var z = 0;
-  List<String> lista = [];
+  List<String> nombre = [];
   List<Map<String, int>> productoycantidad = [
     {"": 0}
   ];
-  List<int> tralingObject = [];
+  List<int> cantidad = [];
   var inicial = 0;
   var contadorSuma = 0;
   var contadorResta = 0;
@@ -82,14 +82,16 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
               itemCount: productos.length,
               itemBuilder: (context, i) {
-                if (tralingObject.isEmpty) {
-                  tralingObject.insert(i, 0);
+                if (cantidad.isEmpty) {
+                  cantidad.insert(i, 0);
                 }
-                if (lista.isEmpty) {
-                  lista.insert(i, "");
+                if (nombre.isEmpty) {
+                  nombre.insert(i, "");
                 }
-                if (productoycantidad.isEmpty) {
-                  productoycantidad.insert(i, {"": 0});
+                if (listaPedido.isEmpty) {
+                  print("if empty");
+                  //listaPedido.insert(i, SeleccionadoModel("", 0));
+                  listaPedido.add(SeleccionadoModel("", 0));
                 }
                 return Dismissible(
                     key: UniqueKey(),
@@ -125,139 +127,213 @@ class _HomePageState extends State<HomePage> {
                                   IconButton(
                                       icon: Icon(Icons.add),
                                       onPressed: () {
-                                        print("traling");
-                                        print(tralingObject);
-                                        print("i");
-                                        print(i);
-                                        inicial++;
-                                        if (i > 0 && inicial == 1) {
-                                          tralingObject.insert(0, 0);
-                                          tralingObject.forEach((element) {
-                                            print("for");
-                                            print(i);
-                                          });
-                                          print("object1");
-                                          print(tralingObject);
-                                        }
-                                        if (tralingObject[i] != null ||
-                                            tralingObject[i] != 0) {
-                                          contadorSuma = tralingObject[i];
-                                          contadorSuma++;
-//productos[i].cantidad = contadorSuma;tra
-                                          if (tralingObject.length <= 1) {
-                                            tralingObject.insert(
-                                                i, contadorSuma);
-                                            print("tralingObject11");
-                                            print(tralingObject);
-                                            lista.insert(
-                                                i, productos[i].nombre);
-                                            print("lista");
-                                            print(lista);
-                                          } else {
-                                            if (productoycantidad.length >= 1) {
-                                              //     productoycantidad.removeAt(i);
+                                        contadorSuma++;
+                                        cantidad.insert(i, contadorSuma);
+                                        nombre.insert(i, productos[i].nombre);
+                                        print(cantidad);
+                                        print(nombre);
+                                        print({cantidad, nombre});
+                                        productoycantidad.insert(i, {
+                                          productos[i].nombre: contadorSuma
+                                        });
+                                        print(productoycantidad);
+                                        // listaPedido.insert(
+                                        //     i,
+                                        //     SeleccionadoModel(
+                                        //         nombre[i], cantidad[i]));
+                                        // print(listaPedido[i].cantidad);
+                                        // print(listaPedido[i].pedido);
 
-                                              tralingObject.removeAt(i);
-                                              //         lista.removeAt(i);
-                                              lista.insert(
-                                                  i, productos[i].nombre);
-                                              print("lista");
-                                              print(lista);
+                                        // print(listaPedido[i].pedido);
+                                        // print(listaPedido[i].cantidad);
+                                        // if (listaPedido[i]
+                                        //     .pedido
+                                        //     .contains(productos[i].nombre)) {
+                                        //   contadorSuma =
+                                        //       listaPedido[i].cantidad;
+                                        //   contadorSuma++;
+                                        //   listaPedido.insert(
+                                        //       i,
+                                        //       SeleccionadoModel(
+                                        //           productos[i].nombre,
+                                        //           contadorSuma));
+                                        //   print(listaPedido[i].pedido);
+                                        //   print(listaPedido[i].cantidad);
+                                        // } else {
+                                        //   contadorSuma = 0;
+                                        //   contadorSuma++;
+                                        //   // if(listaPedido[i].pedido==productos[i].nombre)
+                                        //   listaPedido.insert(
+                                        //       i,
+                                        //       SeleccionadoModel(
+                                        //           productos[i].nombre,
+                                        //           contadorSuma));
+                                        //   print(listaPedido[i].pedido);
+                                        //   print(listaPedido[i].cantidad);
+                                        //   print(listaPedido[i]
+                                        //       .pedido
+                                        //       .contains(productos[i].nombre));
+                                        // }
 
-                                              tralingObject.insert(
-                                                  i, contadorSuma);
-                                              print("tralingObject22");
-                                              print(tralingObject);
-                                            }
-                                            isSelected = false;
-                                            // List.generate(i, (index) {
-                                            //   productoIndex.add(SeleccionadoModel(
-                                            //       i, contadorSuma));
-                                            // });
-                                            // List.generate(productos.length,
-                                            //     (index) {
-                                            //   cantidadPedido.clear();
+                                        // print("lista");
+                                        // print(lista[i]);
+                                        // print("productoycantidad");
+                                        // print(productoycantidad);
 
-                                            // cantidadPedido.add(SeleccionadoModel(
-                                            //     i, contadorSuma)); // });
-                                            // print("cantidadPedido-list");
-                                            // for (var i = 0;
-                                            //     i < cantidadPedido.length;
-                                            //     i++) {
-                                            //   print(
-                                            //       'index=$i, value=${cantidadPedido[i].cantidad}');
-                                            // }
-                                            // cantidadPedido
-                                            //     .asMap()
-                                            //     .forEach((i, value) {
-                                            //   print('index=$i, value=$value');
-                                            // });
-                                            productosProvider
-                                                .actualizarProducto(
-                                                    productos[i]);
-                                            print(
-                                                "if cantidad diferente de null");
-                                          }
-                                        } else {
-                                          // tralingObject.forEach((i) {
-                                          //   print(i);
-                                          // });
-                                          tralingObject.insert(i, 0);
-                                          if (contadorSuma == null) {
-                                            print("if contadorSuma null");
+                                        // if (productoycantidad
+                                        //         .contains(lista[i]) ==
+                                        //     true) {
+                                        //   print("primer if");
+                                        // } else {
+                                        //   print("primer else");
+                                        // }
+                                        // tralingObject.insert(i, contadorSuma);
+                                        // lista.insert(i, productos[i].nombre);
+                                        // print(tralingObject);
+                                        // print(lista);
 
-                                            contadorSuma = 0;
-                                          }
-                                          contadorSuma++;
-                                          productos[i].cantidad = contadorSuma;
-                                          tralingObject.insert(i, contadorSuma);
-                                          print("tralingObject");
-                                          print(tralingObject);
-                                          lista.insert(i, productos[i].nombre);
-                                          print("lista");
-                                          print(lista);
-                                          productosProvider
-                                              .guardarProducto(productos[i]);
-                                          print("else de cantidad = null");
-                                          print("i");
-                                          print(i);
-                                          print("contadorSuma");
-                                          print(contadorSuma);
-                                          isSelected = false;
+                                        // productoycantidad.insert(
+                                        //     i, {lista[i]: tralingObject[i]});
+                                        // print(productoycantidad[i]);
+                                        // print("traling");
+                                        // print(tralingObject);
+                                        // print("i");
+                                        // print(i);
+                                        // inicial++;
+                                        // if (i > 0 && inicial == 1) {
+                                        //   tralingObject.insert(0, 0);
+                                        //   tralingObject.forEach((element) {
+                                        //     print("for");
+                                        //     print(i);
+                                        //   });
+                                        //   print("object1");
+                                        //   print(tralingObject);
+                                        // } else {
+                                        //   print("else val");
+                                        //   tralingObject.remove('');
+                                        //   lista.remove('');
+                                        //   print(tralingObject);
+                                        //   // tralingObject
+                                        //   //     .removeWhere((element) => false);
+                                        // }
+                                        // if (tralingObject[i] != null ||
+                                        //     tralingObject[i] != 0) {
+                                        //   contadorSuma = tralingObject[i];
+                                        //   contadorSuma++;
+                                        //   if (tralingObject.length <= 1) {
+                                        //     tralingObject.insert(
+                                        //         i, contadorSuma);
+                                        //     print("tralingObject11");
+                                        //     print(tralingObject);
+                                        //     lista.insert(
+                                        //         i, productos[i].nombre);
+                                        //     print("lista");
+                                        //     print(lista);
+                                        //   } else {
+                                        //     if (productoycantidad.length >= 1) {
+                                        //       //     productoycantidad.removeAt(i);
 
-                                          // List.generate(productos.length,
-                                          //     (index) {
-                                          //        cantidadPedido.clear();
-                                          // cantidadPedido.add(SeleccionadoModel(
-                                          //     i, contadorSuma));
-                                          // // });
-                                          // print("cantidadPedido-list");
-                                          // for (var i = 0;
-                                          //     i < cantidadPedido.length;
-                                          //     i++) {
-                                          //   print(
-                                          //       'index=$i, value=${cantidadPedido[i].cantidad},value=${cantidadPedido[i].key}');
-                                          // }
-                                          // cantidadPedido
-                                          //     .asMap()
-                                          //     .forEach((i, value) {
-                                          //   print('index=$i, value=$value');
-                                          // });
+                                        //       //     tralingObject.removeAt(i);
+                                        //       //         lista.removeAt(i);
+                                        //       lista.insert(
+                                        //           i, productos[i].nombre);
+                                        //       print("lista");
+                                        //       print(lista);
 
-                                        }
+                                        //       tralingObject.insert(
+                                        //           i, contadorSuma);
+                                        //       print("tralingObject22");
+                                        //       print(tralingObject);
+                                        //     }
+                                        //     isSelected = false;
+                                        //     // List.generate(i, (index) {
+                                        //     //   productoIndex.add(SeleccionadoModel(
+                                        //     //       i, contadorSuma));
+                                        //     // });
+                                        //     // List.generate(productos.length,
+                                        //     //     (index) {
+                                        //     //   cantidadPedido.clear();
+
+                                        //     // cantidadPedido.add(SeleccionadoModel(
+                                        //     //     i, contadorSuma)); // });
+                                        //     // print("cantidadPedido-list");
+                                        //     // for (var i = 0;
+                                        //     //     i < cantidadPedido.length;
+                                        //     //     i++) {
+                                        //     //   print(
+                                        //     //       'index=$i, value=${cantidadPedido[i].cantidad}');
+                                        //     // }
+                                        //     // cantidadPedido
+                                        //     //     .asMap()
+                                        //     //     .forEach((i, value) {
+                                        //     //   print('index=$i, value=$value');
+                                        //     // });
+                                        //     productosProvider
+                                        //         .actualizarProducto(
+                                        //             productos[i]);
+                                        //     print(
+                                        //         "if cantidad diferente de null");
+                                        //   }
+                                        // } else {
+                                        //   // tralingObject.forEach((i) {
+                                        //   //   print(i);
+                                        //   // });
+                                        //   tralingObject.insert(i, 0);
+                                        //   if (contadorSuma == null) {
+                                        //     print("if contadorSuma null");
+
+                                        //     contadorSuma = 0;
+                                        //   }
+                                        //   contadorSuma++;
+                                        //   productos[i].cantidad = contadorSuma;
+                                        //   tralingObject.insert(i, contadorSuma);
+                                        //   print("tralingObject");
+                                        //   print(tralingObject);
+                                        //   lista.insert(i, productos[i].nombre);
+                                        //   print("lista");
+                                        //   print(lista);
+                                        //   productosProvider
+                                        //       .guardarProducto(productos[i]);
+                                        //   print("else de cantidad = null");
+                                        //   print("i");
+                                        //   print(i);
+                                        //   print("contadorSuma");
+                                        //   print(contadorSuma);
+                                        //   isSelected = false;
+
+                                        //   // List.generate(productos.length,
+                                        //   //     (index) {
+                                        //   //        cantidadPedido.clear();
+                                        //   // cantidadPedido.add(SeleccionadoModel(
+                                        //   //     i, contadorSuma));
+                                        //   // // });
+                                        //   // print("cantidadPedido-list");
+                                        //   // for (var i = 0;
+                                        //   //     i < cantidadPedido.length;
+                                        //   //     i++) {
+                                        //   //   print(
+                                        //   //       'index=$i, value=${cantidadPedido[i].cantidad},value=${cantidadPedido[i].key}');
+                                        //   // }
+                                        //   // cantidadPedido
+                                        //   //     .asMap()
+                                        //   //     .forEach((i, value) {
+                                        //   //   print('index=$i, value=$value');
+                                        //   // });
+
+                                        // }
 
                                         //contadorSuma = 0;
                                         setState(() {
                                           if (isSelected == false) {
-                                            contadorResta = tralingObject[i];
-                                            print(productoycantidad);
-                                            productoycantidad.insert(i,
-                                                {lista[i]: tralingObject[i]});
-                                            // lista.add(producto);
-                                            print("productoycantidadSS");
+                                            // contadorResta = tralingObject[i];
+                                            // print(productoycantidad);
+                                            // productoycantidad.insert(i,
+                                            //     {lista[i]: tralingObject[i]});
+                                            // // lista.add(producto);
+                                            // print("productoycantidadSS");
 
-                                            print(productoycantidad);
-                                            // mycolor = Colors.blue;
+                                            // print(productoycantidad);
+                                            // // mycolor = Colors.blue;
                                             isSelected = true;
 
                                             // return lista;
@@ -274,35 +350,35 @@ class _HomePageState extends State<HomePage> {
                                       onPressed: () {
                                         isSelected = false;
 
-                                        // tralingObject.clear();
-                                        if (tralingObject[i] == null) {
-                                          tralingObject[i] = 0;
-                                        }
-                                        contadorSuma = tralingObject[i];
-                                        print(contadorSuma);
-                                        contadorSuma--;
-                                        productoycantidad.removeAt(i);
-                                        tralingObject.removeAt(i);
-                                        lista.removeAt(i);
-                                        lista.insert(i, productos[i].nombre);
-                                        tralingObject.insert(i, contadorSuma);
-                                        contadorResta = tralingObject[i];
-                                        //.removeAt(i);
-                                        print("productoycantidad114");
-                                        print(lista);
-                                        print(tralingObject);
-                                        print(productoycantidad);
+                                        // // tralingObject.clear();
+                                        // if (tralingObject[i] == null) {
+                                        //   tralingObject[i] = 0;
+                                        // }
+                                        // contadorSuma = tralingObject[i];
+                                        // print(contadorSuma);
+                                        // contadorSuma--;
+                                        // productoycantidad.removeAt(i);
+                                        // tralingObject.removeAt(i);
+                                        // lista.removeAt(i);
+                                        // lista.insert(i, productos[i].nombre);
+                                        // tralingObject.insert(i, contadorSuma);
+                                        // contadorResta = tralingObject[i];
+                                        // //.removeAt(i);
+                                        // print("productoycantidad114");
+                                        // print(lista);
+                                        // print(tralingObject);
+                                        // print(productoycantidad);
 
-                                        productos[i].cantidad = contadorSuma;
-                                        productosProvider
-                                            .actualizarProducto(productos[i]);
+                                        // productos[i].cantidad = contadorSuma;
+                                        // productosProvider
+                                        //     .actualizarProducto(productos[i]);
                                       })
                                 ])
                               : null,
                         ),
-                        Text((contadorResta == null
+                        Text((contadorSuma.toString() == null
                             ? ""
-                            : contadorResta.toString()))
+                            : contadorSuma.toString()))
                       ],
                     )));
               });
@@ -339,11 +415,20 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
         backgroundColor: Colors.deepPurple,
         onPressed: () {
-          print(productoycantidad);
+          print(listaPedido);
           print("a otra pantalla");
           //productoycantidad.removeLast();
+
           Navigator.pushNamed(context, 'despacho',
               arguments: productoycantidad.toString());
+
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => DespachoPage(
+          //             seleccion: listaPedido,
+          //           )),
+          // );
         });
   }
 }

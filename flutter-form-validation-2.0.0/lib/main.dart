@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => HomePage(),
           'producto': (BuildContext context) => ProductoPage(),
           'despacho': (BuildContext context) => DespachoPage(
-                despachoss: null,
+                seleccion: null,
               ),
           'borrar': (BuildContext context) => BorrarPage()
         },

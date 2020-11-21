@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:formvalidation/src/models/pedido.model.dart';
+import 'package:formvalidation/src/models/seleccionado.model.dart';
 
 DespachoModel despachoModelFromJson(String str) =>
     DespachoModel.fromJson(json.decode(str));

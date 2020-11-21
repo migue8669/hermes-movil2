@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/models/despachos_model.dart';
 import 'package:formvalidation/src/models/pedido.model.dart';
+import 'package:formvalidation/src/models/seleccionado.model.dart';
 
 import 'package:formvalidation/src/providers/despachos_providers.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,10 +15,11 @@ import 'package:formvalidation/src/providers/productos_provider.dart';
 class DespachoPage extends StatefulWidget {
   // final ProductoModel usernameController; //if you have multiple values add here
   // DespachoPage(this.usernameController, {Key key}) : super(key: key);
-  final DespachoModel despachoss;
-
+  // final DespachoModel despachoss;
+  //final SeleccionadoModel seleccionados;
+  final List<SeleccionadoModel> seleccion;
   // En el constructor, se requiere un objeto Todo
-  DespachoPage({Key key, @required this.despachoss}) : super(key: key);
+  DespachoPage({Key key, @required this.seleccion}) : super(key: key);
   @override
   _DespachoPageState createState() => _DespachoPageState();
 }
@@ -38,6 +40,8 @@ class _DespachoPageState extends State<DespachoPage> {
     //   final DespachoModel prodData = ModalRoute.of(context).settings.arguments;
     // final PedidoModel prodDatas = ModalRoute.of(context).settings.arguments;
     final String prodData = ModalRoute.of(context).settings.arguments;
+    // List<SeleccionadoModel> prodData =
+    //     ModalRoute.of(context).settings.arguments;
     //  DespachoModel prodDatas;
     if (prodData != null) {
       despachos.key = "";
