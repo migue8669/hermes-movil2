@@ -82,12 +82,12 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
               itemCount: productos.length,
               itemBuilder: (context, i) {
-                if (cantidad.isEmpty) {
-                  cantidad.insert(i, 0);
-                }
-                if (nombre.isEmpty) {
-                  nombre.insert(i, "");
-                }
+                //  if (cantidad.isEmpty) {
+                cantidad.add(0);
+                //}
+                //if (nombre.isEmpty) {
+                nombre.add("");
+                // }
                 if (listaPedido.isEmpty) {
                   print("if empty");
                   //listaPedido.insert(i, SeleccionadoModel("", 0));
@@ -127,16 +127,51 @@ class _HomePageState extends State<HomePage> {
                                   IconButton(
                                       icon: Icon(Icons.add),
                                       onPressed: () {
-                                        contadorSuma++;
-                                        cantidad.insert(i, contadorSuma);
-                                        nombre.insert(i, productos[i].nombre);
                                         print(cantidad);
                                         print(nombre);
-                                        print({cantidad, nombre});
-                                        productoycantidad.insert(i, {
-                                          productos[i].nombre: contadorSuma
-                                        });
-                                        print(productoycantidad);
+                                        if (cantidad[i] == 0 &&
+                                            nombre.contains(
+                                                    productos[i].nombre) ==
+                                                false) {
+                                          contadorSuma++;
+
+                                          cantidad.insert(i, contadorSuma);
+                                          nombre.insert(i, productos[i].nombre);
+                                          //   print(cantidad);
+                                          // print(nombre);
+                                          print({cantidad, nombre});
+                                          productoycantidad.insert(i, {
+                                            productos[i].nombre: contadorSuma
+                                          });
+                                          print(productoycantidad);
+                                        } else {
+                                          print("cantidad[i]");
+                                          print(cantidad[i]);
+                                          contadorSuma = 0;
+                                          contadorSuma = cantidad[i];
+                                          contadorSuma++;
+                                          print("contadorSuma");
+                                          print(contadorSuma);
+                                          cantidad.insert(i, contadorSuma);
+
+                                          productoycantidad.removeAt(i);
+                                          // if (productoycantidad
+                                          //     .contains(productos[i].nombre)) {
+                                          //   productoycantidad.removeWhere(
+                                          //       (element) =>
+                                          //           element.containsValue(
+                                          //               productos[i].nombre));
+                                          // }
+                                          print(productoycantidad);
+
+                                          productoycantidad.insert(i, {
+                                            productos[i].nombre: contadorSuma
+                                          });
+                                          print("cantidad[i]=0");
+                                          print(cantidad[i]);
+                                          print(productoycantidad);
+                                        }
+                                        contadorSuma = 0;
                                         // listaPedido.insert(
                                         //     i,
                                         //     SeleccionadoModel(
